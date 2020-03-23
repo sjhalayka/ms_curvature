@@ -24,6 +24,11 @@ using std::istringstream;
 #include <algorithm>
 using std::sort;
 
+#include <complex>
+using std::complex;
+
+
+
 
 // Image objects and parameters.
 tga tga_texture;
@@ -41,7 +46,6 @@ double grid_y_max = 0;
 vector<line_segment> line_segments;
 map<size_t, vector<size_t> > ls_neighbours;
 vector<vertex_2> fn;
-
 vector<vertex_2> v;
 
 
@@ -52,7 +56,7 @@ void get_sorted_points_from_line_segment(size_t ls_index, vector<size_t>& points
 
     vector<size_t> sorted_vertex_indices;
 
-    // do end point 0
+    // do end point 0 and 1
     sorted_vertex_indices.push_back(line_segments[ls_index].vertex[0].index);
     sorted_vertex_indices.push_back(line_segments[ls_index].vertex[1].index);
     sort(sorted_vertex_indices.begin(), sorted_vertex_indices.end());

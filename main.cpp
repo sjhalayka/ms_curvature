@@ -51,10 +51,12 @@ int main(int argc, char **argv)
 	double grid_x_pos = grid_x_min; // Start at minimum x.
 	double grid_y_pos = grid_y_max; // Start at maximum y.
 
+	size_t box_count = 0;
+
 	// Begin march.
-	for(short unsigned int y = 0; y < luma.py - 1; y++, grid_y_pos -= step_size, grid_x_pos = grid_x_min)
+	for(size_t y = 0; y < luma.py - 1; y++, grid_y_pos -= step_size, grid_x_pos = grid_x_min)
 	{
-		for(short unsigned int x = 0; x < luma.px - 1; x++, grid_x_pos += step_size)
+		for(size_t x = 0; x < luma.px - 1; x++, grid_x_pos += step_size)
 		{
 			// Corner vertex order: 03
 			//                      12
@@ -72,7 +74,14 @@ int main(int argc, char **argv)
 			g.value[2] = luma.pixel_data[(y + 1)*luma.px + (x + 1)];
 			g.value[3] = luma.pixel_data[y*luma.px + (x + 1)];
 
+			size_t curr_ls_size = line_segments.size();
+
 			g.generate_primitives(line_segments, isovalue);
+
+			size_t new_ls_size = line_segments.size();
+
+			if (curr_ls_size != new_ls_size)
+				box_count++;
 		}
 	}
 
@@ -151,9 +160,9 @@ int main(int argc, char **argv)
 
 	K /= static_cast<double>(line_segments.size());
 
-	cout << 1.0 + K << endl;
+	cout << "Dot product dimension: " << 1.0 + K << endl;
 
-
+	cout << "Box-counting dimension: " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
 
 	return 0;
 }
