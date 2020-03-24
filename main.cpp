@@ -131,7 +131,9 @@ int main(int argc, char **argv)
 
 
 	get_vertices_from_vertex_2();
-	get_all_ls_neighbours();
+
+
+	return 0;
 
 	double K = 0;
 

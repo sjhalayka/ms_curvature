@@ -205,7 +205,7 @@ void get_all_ls_neighbours(void)
         get_sorted_points_from_line_segment(i, points);
 
         for (size_t j = 0; j < points.size(); j++)
-            neighbours[points[j]].push_back(i);
+neighbours[points[j]].push_back(i);
     }
 
     cout << "Processing shared faces" << endl;
@@ -281,19 +281,76 @@ void get_vertices_from_vertex_2(void)
     cout << "Calculating normals" << endl;
     fn.resize(line_segments.size());
 
-    for (size_t i = 0; i < line_segments.size(); i++)
+ 
+
+    //for (size_t i = 0; i < line_segments.size(); i++)
+    //{
+    //    vertex_2 edge = line_segments[i].vertex[1] - line_segments[i].vertex[0];
+
+    //    vertex_3 v0(edge.x, edge.y, 0.0);
+    //    v0.normalize();
+
+    //    vertex_3 v1(0.0, 0.0, 1.0);
+
+    //    vertex_3 c = v0.cross(v1);
+    //    fn[i] = vertex_2(c.x, c.y);
+    //    fn[i].normalize();
+    //}
+
+
+    get_all_ls_neighbours();
+
+    size_t num_objects = 0;
+    bool some_unfound = true;
+    size_t last_unfound_index = 0;
+    size_t prev_index = 0;
+    set<size_t> found_indices;
+
+    found_indices.insert(0);
+
+    do
     {
-        vertex_2 edge = line_segments[i].vertex[1] - line_segments[i].vertex[0];
+        const size_t first_index = last_unfound_index;
 
-        vertex_3 v0(edge.x, edge.y, 0.0);
-        v0.normalize();
+        prev_index = first_index;
 
-        vertex_3 v1(0.0, 0.0, 1.0);
+        size_t curr_index = ls_neighbours[first_index][0];
 
-        vertex_3 c = v0.cross(v1);
-        fn[i] = vertex_2(c.x, c.y);
-        fn[i].normalize();
-    }
+        do
+        {
+            found_indices.insert(curr_index);
+
+            size_t index0 = ls_neighbours[curr_index][0];
+            size_t index1 = ls_neighbours[curr_index][1];
+  
+            if (index0 == prev_index)
+            {
+                prev_index = curr_index;
+                curr_index = index1;
+            }
+            else
+            {
+                prev_index = curr_index;
+                curr_index = index0;
+            }
+           
+        } while (curr_index != first_index);
+        
+        for (size_t i = 0; i < fn.size(); i++)
+        {
+            if (found_indices.end() == found_indices.find(i))
+            {
+                last_unfound_index = i;
+                found_indices.insert(last_unfound_index);
+                break;
+            }
+        }
+
+        num_objects++;
+
+    } while (found_indices.size() != fn.size());
+
+    cout << "Found " << num_objects << " object(s)." << endl;
 }
 
 
