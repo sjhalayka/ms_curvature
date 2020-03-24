@@ -12,6 +12,11 @@ public:
 	vertex_2 vertex[4];
 	double value[4];
 
+	grid_square(void)
+	{
+		value[0] = value[1] = value[2] = value[3] = 0;
+	}
+
 	inline vertex_2 vertex_interp(const vertex_2 &p1, const vertex_2 &p2, const double v1, const double v2, const double isovalue)
 	{
 		static vertex_2 temp;

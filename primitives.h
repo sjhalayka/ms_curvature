@@ -171,6 +171,26 @@ public:
 			return false;
 	}
 
+	inline const vertex_2& operator*(const float& right) const
+	{
+		static vertex_2 temp;
+
+		temp.x = this->x * right;
+		temp.y = this->y * right;
+
+		return temp;
+	}
+
+	inline const vertex_2& operator/(const float& right) const
+	{
+		static vertex_2 temp;
+
+		temp.x = this->x / right;
+		temp.y = this->y / right;
+
+		return temp;
+	}
+
 	inline bool operator<(const vertex_2 &right) const
 	{
 		if(right.x > x)
@@ -184,6 +204,16 @@ public:
 			return false;
 
 		return false;
+	}
+
+	inline const vertex_2& operator+(const vertex_2& right) const
+	{
+		static vertex_2 temp;
+
+		temp.x = this->x + right.x;
+		temp.y = this->y + right.y;
+
+		return temp;
 	}
 
 	inline const vertex_2& operator-(const vertex_2 &right) const

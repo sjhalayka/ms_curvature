@@ -164,6 +164,9 @@ int main(int argc, char **argv)
 
 	cout << "Box-counting dimension: " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
 
+	render_image(argc, argv);
+
+
 	return 0;
 }
 
