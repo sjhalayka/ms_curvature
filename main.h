@@ -118,22 +118,21 @@ void display_func(void)
     glEnd();
 
 
-    glColor3f(1, 0, 0);
+    
+    glPointSize(6);
     glBegin(GL_LINES);
-    for (size_t i = 0; i < fn.size(); i++)
+
+    for (size_t i = 0; i < line_segments.size(); i++)
     {
-        vertex_2 avg_vertex;
-        avg_vertex = avg_vertex + line_segments[i].vertex[0];
+        vertex_2 avg_vertex = line_segments[i].vertex[0];
         avg_vertex = avg_vertex + line_segments[i].vertex[1];
         avg_vertex = avg_vertex / 2.0;
 
+        glColor3f(1, 0, 0);
         glVertex2d(avg_vertex.x, avg_vertex.y);
         glVertex2d(avg_vertex.x + fn[i].x*0.1, avg_vertex.y + fn[i].y*0.1);
     }
     glEnd();
-
-
-    glLineWidth(1); 
 
     glFlush();
 }
@@ -283,19 +282,7 @@ void get_vertices_from_vertex_2(void)
 
  
 
-    //for (size_t i = 0; i < line_segments.size(); i++)
-    //{
-    //    vertex_2 edge = line_segments[i].vertex[1] - line_segments[i].vertex[0];
 
-    //    vertex_3 v0(edge.x, edge.y, 0.0);
-    //    v0.normalize();
-
-    //    vertex_3 v1(0.0, 0.0, 1.0);
-
-    //    vertex_3 c = v0.cross(v1);
-    //    fn[i] = vertex_2(c.x, c.y);
-    //    fn[i].normalize();
-    //}
 
 
     get_all_ls_neighbours();
@@ -305,7 +292,6 @@ void get_vertices_from_vertex_2(void)
     size_t last_unfound_index = 0;
     size_t prev_index = 0;
     set<size_t> found_indices;
-
     found_indices.insert(0);
 
     do
@@ -313,6 +299,17 @@ void get_vertices_from_vertex_2(void)
         const size_t first_index = last_unfound_index;
 
         prev_index = first_index;
+
+
+        vertex_2 edge = line_segments[prev_index].vertex[1] - line_segments[prev_index].vertex[0];
+        edge.normalize();
+
+        vertex_3 v0(edge.x, edge.y, 0.0);
+        vertex_3 v1(0.0, 0.0, 1.0);
+
+        vertex_3 c = v0.cross(v1);
+        fn[prev_index] = vertex_2(c.x, c.y);
+        fn[prev_index].normalize();
 
         size_t curr_index = ls_neighbours[first_index][0];
 
@@ -333,9 +330,22 @@ void get_vertices_from_vertex_2(void)
                 prev_index = curr_index;
                 curr_index = index0;
             }
-           
+        
+            vertex_2 edge = line_segments[prev_index].vertex[1] - line_segments[prev_index].vertex[0];
+            edge.normalize();
+
+            vertex_3 v0(edge.x, edge.y, 0.0);
+            vertex_3 v1(0.0, 0.0, 1.0);
+
+            vertex_3 c = v0.cross(v1);
+            fn[prev_index] = vertex_2(c.x, c.y);
+            fn[prev_index].normalize();
+
         } while (curr_index != first_index);
         
+
+
+
         for (size_t i = 0; i < fn.size(); i++)
         {
             if (found_indices.end() == found_indices.find(i))
@@ -345,6 +355,8 @@ void get_vertices_from_vertex_2(void)
                 break;
             }
         }
+
+
 
         num_objects++;
 

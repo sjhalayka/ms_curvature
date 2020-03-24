@@ -132,8 +132,8 @@ int main(int argc, char **argv)
 
 	get_vertices_from_vertex_2();
 
+	cout << fn.size() << endl;
 
-	return 0;
 
 	double K = 0;
 
