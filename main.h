@@ -277,15 +277,10 @@ void get_vertices_from_vertex_2(void)
 
     vertex_set.clear();
 
+    get_all_ls_neighbours();
+
     cout << "Calculating normals" << endl;
     fn.resize(line_segments.size());
-
- 
-
-
-
-
-    get_all_ls_neighbours();
 
     size_t num_objects = 0;
     bool some_unfound = true;
@@ -300,18 +295,24 @@ void get_vertices_from_vertex_2(void)
 
         prev_index = first_index;
 
-
-        vertex_2 edge = line_segments[prev_index].vertex[1] - line_segments[prev_index].vertex[0];
-        edge.normalize();
-
-        vertex_3 v0(edge.x, edge.y, 0.0);
-        vertex_3 v1(0.0, 0.0, 1.0);
-
-        vertex_3 c = v0.cross(v1);
-        fn[prev_index] = vertex_2(c.x, c.y);
-        fn[prev_index].normalize();
-
         size_t curr_index = ls_neighbours[first_index][0];
+
+
+        //size_t backward = prev_index;
+        //size_t forward = ls_neighbours[curr_index][0];
+
+        //if (backward == forward)
+        //    forward = ls_neighbours[curr_index][1];
+
+        //vertex_2 edge = line_segments[backward].vertex[0] - line_segments[forward].vertex[0];
+        //edge.normalize();
+
+        //vertex_3 v0(edge.x, edge.y, 0.0);
+        //vertex_3 v1(0.0, 0.0, 1.0);
+
+        //vertex_3 c = v0.cross(v1);
+        //fn[prev_index] = vertex_2(c.x, c.y);
+        //fn[prev_index].normalize();
 
         do
         {
@@ -331,20 +332,23 @@ void get_vertices_from_vertex_2(void)
                 curr_index = index0;
             }
         
-            vertex_2 edge = line_segments[prev_index].vertex[1] - line_segments[prev_index].vertex[0];
-            edge.normalize();
+            //backward = prev_index;
+            //forward = ls_neighbours[curr_index][0];
 
-            vertex_3 v0(edge.x, edge.y, 0.0);
-            vertex_3 v1(0.0, 0.0, 1.0);
+            //if (backward == forward)
+            //    forward = ls_neighbours[curr_index][1];
 
-            vertex_3 c = v0.cross(v1);
-            fn[prev_index] = vertex_2(c.x, c.y);
-            fn[prev_index].normalize();
+            //edge = line_segments[backward].vertex[0] - line_segments[forward].vertex[0];
+            //edge.normalize();
+
+            //v0 = vertex_3(edge.x, edge.y, 0.0);
+            //v1 = vertex_3(0.0, 0.0, 1.0);
+
+            //c = v0.cross(v1);
+            //fn[prev_index] = vertex_2(c.y, c.x);
+            //fn[prev_index].normalize();
 
         } while (curr_index != first_index);
-        
-
-
 
         for (size_t i = 0; i < fn.size(); i++)
         {
