@@ -354,6 +354,7 @@ void get_vertices_from_vertex_2(void)
             if (processed_indices.end() == processed_indices.find(i))
             {
                 last_unfound_index = i;
+
                 break;
             }
         }
@@ -384,6 +385,7 @@ void get_vertices_from_vertex_2(void)
             fn[curr_index].normalize();
         }
  
+        cout << "Found object " << num_objects + 1 << endl;
         num_objects++;
 
     } while (processed_indices.size() != fn.size());
