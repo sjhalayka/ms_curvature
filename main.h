@@ -124,11 +124,17 @@ void display_func(void)
 
     for (size_t i = 0; i < line_segments.size(); i++)
     {
+        //if (fn[i].length() == 0.0f)
+        //{
+        //    cout << i << endl;
+        //    cout << fn[i].length() << endl;
+        //}
+
         vertex_2 avg_vertex = line_segments[i].vertex[0];
         avg_vertex = avg_vertex + line_segments[i].vertex[1];
         avg_vertex = avg_vertex / 2.0;
-
-        glColor3f(1, 0, 0);
+        srand(0);
+        glColor3d(rand()%256 / 255.0, rand() % 256 / 255.0, rand() % 256 / 255.0);
         glVertex2d(avg_vertex.x, avg_vertex.y);
         glVertex2d(avg_vertex.x + fn[i].x*0.1, avg_vertex.y + fn[i].y*0.1);
     }
@@ -204,7 +210,7 @@ void get_all_ls_neighbours(void)
         get_sorted_points_from_line_segment(i, points);
 
         for (size_t j = 0; j < points.size(); j++)
-neighbours[points[j]].push_back(i);
+            neighbours[points[j]].push_back(i);
     }
 
     cout << "Processing shared faces" << endl;
@@ -222,6 +228,7 @@ neighbours[points[j]].push_back(i);
         ls_neighbours[ci->second[1]].push_back(ci->second[0]);
     }
 }
+
 
 
 void get_vertices_from_vertex_2(void)
@@ -285,86 +292,104 @@ void get_vertices_from_vertex_2(void)
     size_t num_objects = 0;
     bool some_unfound = true;
     size_t last_unfound_index = 0;
-    size_t prev_index = 0;
-    set<size_t> found_indices;
-    found_indices.insert(0);
+
+    size_t prev_index = ls_neighbours[0][0];
+    size_t curr_index = 0;
+    size_t next_index = ls_neighbours[0][1];
+
+    set<size_t> processed_indices;
+
+    vector<tri_index> tri_indices;
 
     do
     {
         const size_t first_index = last_unfound_index;
 
         prev_index = first_index;
+        curr_index = ls_neighbours[first_index][0];
+        next_index = ls_neighbours[curr_index][0];
 
-        size_t curr_index = ls_neighbours[first_index][0];
+		if (prev_index == next_index)
+			next_index = ls_neighbours[curr_index][1];
 
-
-        //size_t backward = prev_index;
-        //size_t forward = ls_neighbours[curr_index][0];
-
-        //if (backward == forward)
-        //    forward = ls_neighbours[curr_index][1];
-
-        //vertex_2 edge = line_segments[backward].vertex[0] - line_segments[forward].vertex[0];
-        //edge.normalize();
-
-        //vertex_3 v0(edge.x, edge.y, 0.0);
-        //vertex_3 v1(0.0, 0.0, 1.0);
-
-        //vertex_3 c = v0.cross(v1);
-        //fn[prev_index] = vertex_2(c.x, c.y);
-        //fn[prev_index].normalize();
+        tri_index t;
+        t.prev_index = prev_index;
+        t.curr_index = curr_index;
+        t.next_index = next_index;
+        tri_indices.push_back(t);
+        processed_indices.insert(curr_index);
 
         do
         {
-            found_indices.insert(curr_index);
-
             size_t index0 = ls_neighbours[curr_index][0];
             size_t index1 = ls_neighbours[curr_index][1];
-  
+
             if (index0 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index1;
+                next_index = ls_neighbours[curr_index][1];
+
+                if (prev_index == next_index)
+                    next_index = ls_neighbours[curr_index][0];
             }
-            else
+            else if (index1 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index0;
+                next_index = ls_neighbours[curr_index][0];
+
+                if (prev_index == next_index)
+                    next_index = ls_neighbours[curr_index][1];
             }
-        
-            //backward = prev_index;
-            //forward = ls_neighbours[curr_index][0];
 
-            //if (backward == forward)
-            //    forward = ls_neighbours[curr_index][1];
-
-            //edge = line_segments[backward].vertex[0] - line_segments[forward].vertex[0];
-            //edge.normalize();
-
-            //v0 = vertex_3(edge.x, edge.y, 0.0);
-            //v1 = vertex_3(0.0, 0.0, 1.0);
-
-            //c = v0.cross(v1);
-            //fn[prev_index] = vertex_2(c.y, c.x);
-            //fn[prev_index].normalize();
+            tri_index t;
+            t.prev_index = prev_index;
+            t.curr_index = curr_index;
+            t.next_index = next_index;
+            tri_indices.push_back(t);
+            processed_indices.insert(curr_index);
 
         } while (curr_index != first_index);
 
         for (size_t i = 0; i < fn.size(); i++)
         {
-            if (found_indices.end() == found_indices.find(i))
+            if (processed_indices.end() == processed_indices.find(i))
             {
                 last_unfound_index = i;
-                found_indices.insert(last_unfound_index);
                 break;
             }
         }
 
+        for (size_t i = 0; i < tri_indices.size(); i++)
+        {
+            size_t prev_index = tri_indices[i].prev_index;
+            size_t curr_index = tri_indices[i].curr_index;
+            size_t next_index = tri_indices[i].next_index;
 
+            size_t first_vertex_index = 0;
+            size_t last_vertex_index = 0;
 
+            if (ls_neighbours[prev_index][0] == curr_index)
+                first_vertex_index = 0;
+            else
+                first_vertex_index = 1;
+
+            if (ls_neighbours[next_index][0] == curr_index)
+                last_vertex_index = 0;
+            else
+                last_vertex_index = 1;
+
+            vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
+            edge.normalize();
+
+            fn[curr_index] = vertex_2(-edge.y, edge.x);
+            fn[curr_index].normalize();
+        }
+ 
         num_objects++;
 
-    } while (found_indices.size() != fn.size());
+    } while (processed_indices.size() != fn.size());
 
     cout << "Found " << num_objects << " object(s)." << endl;
 }

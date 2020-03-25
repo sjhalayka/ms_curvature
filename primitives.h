@@ -4,6 +4,38 @@
 
 #include <cmath>
 
+class tri_index
+{
+public:
+
+	size_t prev_index, curr_index, next_index;
+
+	tri_index(void)
+	{
+		prev_index = curr_index = next_index = 0;
+	}
+
+	inline bool operator<(const tri_index& right) const
+	{
+		if (right.prev_index > prev_index)
+			return true;
+		else if (right.prev_index < prev_index)
+			return false;
+
+		if (right.curr_index > curr_index)
+			return true;
+		else if (right.curr_index < curr_index)
+			return false;
+
+		if (right.next_index > next_index)
+			return true;
+		else if (right.next_index < next_index)
+			return false;
+
+		return false;
+	}
+};
+
 
 class vertex_3
 {
