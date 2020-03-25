@@ -86,53 +86,7 @@ int main(int argc, char **argv)
 	}
 
 
-	// Gather and print final information
-	double length = 0;
-
-	double x_max = grid_x_min;
-	double x_min = -grid_x_min;
-	double y_max = -grid_y_max;
-	double y_min = grid_y_max;
-
-	for(size_t i = 0; i < line_segments.size(); i++)
-	{
-		length += line_segments[i].length();
-
-		if(line_segments[i].vertex[0].x > x_max)
-			x_max = line_segments[i].vertex[0].x; 
-
-		if(line_segments[i].vertex[1].x > x_max)
-			x_max = line_segments[i].vertex[1].x;
-
-		if(line_segments[i].vertex[0].x < x_min)
-			x_min = line_segments[i].vertex[0].x;
-
-		if(line_segments[i].vertex[1].x < x_min)
-			x_min = line_segments[i].vertex[1].x;
-
-		if(line_segments[i].vertex[0].y > y_max)
-			y_max = line_segments[i].vertex[0].y;
-
-		if(line_segments[i].vertex[1].y > y_max)
-			y_max = line_segments[i].vertex[1].y;
-
-		if(line_segments[i].vertex[0].y < y_min)
-			y_min = line_segments[i].vertex[0].y;
-
-		if(line_segments[i].vertex[1].y < y_min)
-			y_min = line_segments[i].vertex[1].y;
-	}
-
-	cout << "Geometric primitive info: " << endl;
-	cout << "Vertex x min, max: " << x_min << ", " << x_max << endl;
-	cout << "Vertex y min, max: " << y_min << ", " << y_max << endl;
-	cout << "Line segments:     " << line_segments.size() << endl;
-	cout << "Length:            " << length << endl;
-
-
 	get_vertices_from_vertex_2();
-
-	cout << fn.size() << endl;
 
 
 	double K = 0;

@@ -293,9 +293,9 @@ void get_vertices_from_vertex_2(void)
     bool some_unfound = true;
     size_t last_unfound_index = 0;
 
-    size_t prev_index = ls_neighbours[0][0];
+    size_t prev_index = 0;
     size_t curr_index = 0;
-    size_t next_index = ls_neighbours[0][1];
+    size_t next_index = 0;
 
     set<size_t> processed_indices;
 
@@ -308,9 +308,6 @@ void get_vertices_from_vertex_2(void)
         prev_index = first_index;
         curr_index = ls_neighbours[first_index][0];
         next_index = ls_neighbours[curr_index][0];
-
-		if (prev_index == next_index)
-			next_index = ls_neighbours[curr_index][1];
 
         tri_index t;
         t.prev_index = prev_index;
