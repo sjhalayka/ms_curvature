@@ -136,7 +136,7 @@ void display_func(void)
         srand(0);
         glColor3d(rand()%256 / 255.0, rand() % 256 / 255.0, rand() % 256 / 255.0);
         glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + fn[i].x*0.1, avg_vertex.y + fn[i].y*0.1);
+        glVertex2d(avg_vertex.x + fn[i].x*0.01, avg_vertex.y + fn[i].y*0.01);
     }
     glEnd();
 

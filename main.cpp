@@ -18,6 +18,13 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	if (luma.px != luma.py)
+	{
+		cout << "Template must be square." << endl;
+		return 0;
+	}
+
+
 	// If rendering problems occur, try using images of equal width and height (e.g. px = py).
 	// Also try sizes that are powers of two (e.g. px = py = 2^x, x = 0, 1, 2, 3, ...).
 
