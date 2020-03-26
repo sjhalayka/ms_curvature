@@ -245,7 +245,9 @@ void process_line_segments(void)
             face_normals[curr_index].normalize();
         }
  
-        cout << "Found object " << num_objects + 1 << endl;
+        if(num_objects % 100 == 0)
+            cout << "Found object " << num_objects + 1 << endl;
+        
         num_objects++;
 
     } while (processed_indices.size() != face_normals.size());

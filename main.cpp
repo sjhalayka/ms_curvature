@@ -11,7 +11,6 @@ int main(void)
 	double template_height = 0;
 	double step_size = 0;
 	double isovalue = 0;
-	double inverse_width = 0;
 	double grid_x_min = 0;
 	double grid_y_max = 0;
 
@@ -37,7 +36,6 @@ int main(void)
 	}
 
 	template_width = 1.0;
-	inverse_width = 1.0/template_width;
 	step_size = template_width/static_cast<double>(luma.px - 1);
 	template_height = step_size*(luma.py - 1); // Assumes square pixels.
 	isovalue = 0.5;

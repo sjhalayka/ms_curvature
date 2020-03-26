@@ -35,7 +35,7 @@ bool convert_tga_to_float_grayscale(const char *const filename, tga &t, float_gr
 
 	if(0 != t.idlength)
 	{
-		t.idstring.resize(t.idlength + 1, '\0'); // Terminate this ``C style'' string properly.
+		t.idstring.resize(static_cast<size_t>(t.idlength) + 1, '\0'); // Terminate this ``C style'' string properly.
 		in.read(&t.idstring[0], t.idlength);
 	}
 
@@ -54,7 +54,7 @@ bool convert_tga_to_float_grayscale(const char *const filename, tga &t, float_gr
 		}
 
 		// Read all pixels at once.
-		size_t num_bytes = t.px*t.py*3;
+		size_t num_bytes = static_cast<size_t>(t.px)*static_cast<size_t>(t.py)*3;
 		t.pixel_data.resize(num_bytes);
 		in.read(reinterpret_cast<char *>(&t.pixel_data[0]), num_bytes);
 
@@ -62,34 +62,34 @@ bool convert_tga_to_float_grayscale(const char *const filename, tga &t, float_gr
 		{
 			// Reverse row order.
 			short unsigned int num_rows_to_swap = t.py;
-			vector<unsigned char> buffer(t.px*3);
+			vector<unsigned char> buffer(static_cast<size_t>(t.px)*3);
 
 			if(0 != t.py % 2)
 				num_rows_to_swap--;
 
 			num_rows_to_swap /= 2;
 
-			for(short unsigned int i = 0; i < num_rows_to_swap; i++)
+			for(size_t i = 0; i < num_rows_to_swap; i++)
 			{
-				size_t y_first = i*t.px*3;
-				size_t y_last = (t.py - 1 - i)*t.px*3;
+				size_t y_first = i* static_cast<size_t>(t.px)*3;
+				size_t y_last = (static_cast<size_t>(t.py) - 1 - i)* static_cast<size_t>(t.px)*3;
 
-				memcpy(&buffer[0], &t.pixel_data[y_first], t.px*3);
-				memcpy(&t.pixel_data[y_first], &t.pixel_data[y_last], t.px*3);
-				memcpy(&t.pixel_data[y_last], &buffer[0], t.px*3);
+				memcpy(&buffer[0], &t.pixel_data[y_first], static_cast<size_t>(t.px)*3);
+				memcpy(&t.pixel_data[y_first], &t.pixel_data[y_last], static_cast<size_t>(t.px)*3);
+				memcpy(&t.pixel_data[y_last], &buffer[0], static_cast<size_t>(t.px)*3);
 			}
 		}
 
 		if(true == make_black_border)
 		{
 			// Make border pixels black.
-			for(unsigned short int x = 0; x < t.px; x++)
+			for(size_t x = 0; x < t.px; x++)
 			{
-				for(unsigned short int y = 0; y < t.py; y++)
+				for(size_t y = 0; y < t.py; y++)
 				{
 					if(x == 0 || x == t.px - 1 || y == 0 || y == t.py - 1)
 					{
-						size_t index = y*t.px*3 + x*3;
+						size_t index = y* static_cast<size_t>(t.px)*3 + x*3;
 						t.pixel_data[index] = 0;
 						t.pixel_data[index + 1] = 0;
 						t.pixel_data[index + 2] = 0;
