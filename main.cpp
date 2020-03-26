@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 	}
 
 
-	get_vertices_from_vertex_2();
+	process_line_segments();
 
 	// Calculate curvature-based dimension
 	double K = 0;
@@ -105,9 +105,9 @@ int main(int argc, char **argv)
 		size_t neighbour_0_index = line_segment_neighbours[i][0];
 		size_t neighbour_1_index = line_segment_neighbours[i][1];
 
-		vertex_2 this_normal = fn[i];
-		vertex_2 neighbour_0_normal = fn[neighbour_0_index];
-		vertex_2 neighbour_1_normal = fn[neighbour_1_index];
+		vertex_2 this_normal = face_normals[i];
+		vertex_2 neighbour_0_normal = face_normals[neighbour_0_index];
+		vertex_2 neighbour_1_normal = face_normals[neighbour_1_index];
 
 		double d_i = this_normal.dot(neighbour_0_normal) + this_normal.dot(neighbour_1_normal);
 		d_i /= 2.0;

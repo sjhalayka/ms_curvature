@@ -44,8 +44,8 @@ double grid_y_max = 0;
 // Marching squares-generated geometric primitives.
 vector<line_segment> line_segments;
 map<size_t, vector<size_t> > line_segment_neighbours;
-vector<vertex_2> fn;
-vector<vertex_2> v;
+vector<vertex_2> face_normals;
+vector<vertex_2> vertices;
 
 
 
@@ -108,10 +108,10 @@ void get_all_line_segment_neighbours(void)
 
 
 
-void get_vertices_from_vertex_2(void)
+void process_line_segments(void)
 {
-    fn.clear();
-    v.clear();
+    face_normals.clear();
+    vertices.clear();
 
     if (0 == line_segments.size())
         return;
@@ -134,15 +134,15 @@ void get_vertices_from_vertex_2(void)
     // Add indices to the vertices.
     for (set<vertex_2>::const_iterator i = vertex_set.begin(); i != vertex_set.end(); i++)
     {
-        size_t index = v.size();
-        v.push_back(*i);
-        v[index].index = index;
+        size_t index = vertices.size();
+        vertices.push_back(*i);
+        vertices[index].index = index;
     }
 
     vertex_set.clear();
 
     // Re-insert modifies vertices into set.
-    for (vector<vertex_2>::const_iterator i = v.begin(); i != v.end(); i++)
+    for (vector<vertex_2>::const_iterator i = vertices.begin(); i != vertices.end(); i++)
         vertex_set.insert(*i);
 
     cout << "Assigning vertex indices to line segments" << endl;
@@ -164,7 +164,7 @@ void get_vertices_from_vertex_2(void)
     get_all_line_segment_neighbours();
 
     cout << "Calculating normals" << endl;
-    fn.resize(line_segments.size());
+    face_normals.resize(line_segments.size());
 
     size_t num_objects = 0;
 
@@ -228,7 +228,7 @@ void get_vertices_from_vertex_2(void)
 
         } while (curr_index != first_index);
 
-        for (size_t i = 0; i < fn.size(); i++)
+        for (size_t i = 0; i < face_normals.size(); i++)
         {
             if (processed_indices.end() == processed_indices.find(i))
             {
@@ -259,14 +259,14 @@ void get_vertices_from_vertex_2(void)
                 last_vertex_index = 1;
 
             vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
-            fn[curr_index] = vertex_2(-edge.y, edge.x);
-            fn[curr_index].normalize();
+            face_normals[curr_index] = vertex_2(-edge.y, edge.x);
+            face_normals[curr_index].normalize();
         }
  
         cout << "Found object " << num_objects + 1 << endl;
         num_objects++;
 
-    } while (processed_indices.size() != fn.size());
+    } while (processed_indices.size() != face_normals.size());
 
     cout << "Found " << num_objects << " object(s)." << endl;
 }
