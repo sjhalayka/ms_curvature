@@ -1,6 +1,7 @@
 #ifndef MS_H
 #define MS_H
 
+
 #include "image.h"
 #include "primitives.h"
 #include "marching_squares.h"
@@ -18,14 +19,9 @@ using std::map;
 using std::cout;
 using std::endl;
 
-#include <sstream>
-using std::istringstream;
-
 #include <algorithm>
 using std::sort;
 
-#include <complex>
-using std::complex;
 
 
 
