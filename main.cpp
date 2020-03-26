@@ -119,8 +119,8 @@ int main(int argc, char **argv)
 
 	K /= static_cast<double>(line_segments.size());
 
-	cout << "Dot product dimension: " << 1.0 + K << endl;
-	cout << "Box-counting dimension: " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
+	cout << "Curvature-based dimension: " << 1.0 + K << endl;
+	cout << "Box-counting dimension:    " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
 
 	return 0;
 }
