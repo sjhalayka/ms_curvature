@@ -167,15 +167,9 @@ void process_line_segments(void)
     face_normals.resize(line_segments.size());
 
     size_t num_objects = 0;
-
     size_t last_unprocessed_index = 0;
 
-    size_t prev_index = 0;
-    size_t curr_index = 0;
-    size_t next_index = 0;
-
     set<size_t> processed_indices;
-
     vector<tri_index> tri_indices;
 
     // Get the neighbours for each line segment
@@ -183,9 +177,9 @@ void process_line_segments(void)
     {
         const size_t first_index = last_unprocessed_index;
 
-        prev_index = first_index;
-        curr_index = line_segment_neighbours[first_index][0];
-        next_index = line_segment_neighbours[curr_index][0];
+        size_t prev_index = first_index;
+        size_t curr_index = line_segment_neighbours[first_index][0];
+        size_t next_index = line_segment_neighbours[curr_index][0];
 
         tri_index t;
         t.prev_index = prev_index;
