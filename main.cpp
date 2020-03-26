@@ -24,10 +24,6 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-
-	// If rendering problems occur, try using images of equal width and height (e.g. px = py).
-	// Also try sizes that are powers of two (e.g. px = py = 2^x, x = 0, 1, 2, 3, ...).
-
 	template_width = 1.0;
 
 	inverse_width = 1.0/template_width;
@@ -95,19 +91,19 @@ int main(int argc, char **argv)
 
 	get_vertices_from_vertex_2();
 
-
+	// Calculate curvature-based dimension
 	double K = 0;
 
 	for (size_t i = 0; i < line_segments.size(); i++)
 	{
-		if (ls_neighbours[i].size() != 2)
+		if (line_segment_neighbours[i].size() != 2)
 		{
 			cout << "Error" << endl;
 			return 1;
 		}
 
-		size_t neighbour_0_index = ls_neighbours[i][0];
-		size_t neighbour_1_index = ls_neighbours[i][1];
+		size_t neighbour_0_index = line_segment_neighbours[i][0];
+		size_t neighbour_1_index = line_segment_neighbours[i][1];
 
 		vertex_2 this_normal = fn[i];
 		vertex_2 neighbour_0_normal = fn[neighbour_0_index];
@@ -124,11 +120,7 @@ int main(int argc, char **argv)
 	K /= static_cast<double>(line_segments.size());
 
 	cout << "Dot product dimension: " << 1.0 + K << endl;
-
 	cout << "Box-counting dimension: " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
-
-	render_image(argc, argv);
-
 
 	return 0;
 }

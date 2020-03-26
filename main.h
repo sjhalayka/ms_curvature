@@ -28,15 +28,6 @@ using std::sort;
 using std::complex;
 
 
-#include <GL/glut.h>
-
-
-GLint win_id = 0;
-GLint win_x = 800, win_y = 800;
-GLfloat camera_z = 1.25;
-float background_colour = 0.33f;
-
-
 
 // Image objects and parameters.
 tga tga_texture;
@@ -52,123 +43,9 @@ double grid_y_max = 0;
 
 // Marching squares-generated geometric primitives.
 vector<line_segment> line_segments;
-map<size_t, vector<size_t> > ls_neighbours;
+map<size_t, vector<size_t> > line_segment_neighbours;
 vector<vertex_2> fn;
 vector<vertex_2> v;
-
-
-
-void idle_func(void)
-{
-    glutPostRedisplay();
-}
-
-// Resize window.
-void reshape_func(int width, int height)
-{
-    if (width < 1)
-        width = 1;
-
-    if (height < 1)
-        height = 1;
-
-    win_x = width;
-    win_y = height;
-
-    // Viewport setup.
-    glutSetWindow(win_id);
-    glutReshapeWindow(win_x, win_y);
-    glViewport(0, 0, win_x, win_y);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0f, static_cast<GLfloat>(win_x) / static_cast<GLfloat>(win_y), 0.1, 10);
-    gluLookAt(0, 0, camera_z, 0, 0, 0, 0, 1, 0);
-}
-
-// Visualization.
-void display_func(void)
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // Scale all geometric primitives so that template width == 1.
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glScaled(inverse_width, inverse_width, inverse_width);
-
-    // Render a dark background.
-    glColor3f(0, 0, 0);
-    glBegin(GL_QUADS);
-        glVertex2d(-template_width / 2.0, template_height / 2.0);
-        glVertex2d(-template_width / 2.0, -template_height / 2.0);
-        glVertex2d(template_width / 2.0, -template_height / 2.0);
-        glVertex2d(template_width / 2.0, template_height / 2.0);
-    glEnd();
-
-    // Render image area.
-
-    // Render image outline edge length.
-    glColor3f(0, 0, 1);
-    glLineWidth(4);
-    glBegin(GL_LINES);
-    for (size_t i = 0; i < line_segments.size(); i++)
-    {
-        glVertex2d(line_segments[i].vertex[0].x, line_segments[i].vertex[0].y);
-        glVertex2d(line_segments[i].vertex[1].x, line_segments[i].vertex[1].y);
-    }
-    glEnd();
-
-
-    
-    glPointSize(6);
-    glBegin(GL_LINES);
-
-    for (size_t i = 0; i < line_segments.size(); i++)
-    {
-        //if (fn[i].length() == 0.0f)
-        //{
-        //    cout << i << endl;
-        //    cout << fn[i].length() << endl;
-        //}
-
-        vertex_2 avg_vertex = line_segments[i].vertex[0];
-        avg_vertex = avg_vertex + line_segments[i].vertex[1];
-        avg_vertex = avg_vertex / 2.0;
-        srand(0);
-        glColor3d(rand()%256 / 255.0, rand() % 256 / 255.0, rand() % 256 / 255.0);
-        glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + fn[i].x*0.01, avg_vertex.y + fn[i].y*0.01);
-    }
-    glEnd();
-
-    glFlush();
-}
-
-void render_image(int& argc, char**& argv)
-{
-    // Initialize OpenGL.
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB);
-    glutInitWindowPosition(0, 0);
-    glutInitWindowSize(win_x, win_y);
-    win_id = glutCreateWindow("Marching Squares");
-    glutIdleFunc(idle_func);
-    glutReshapeFunc(reshape_func);
-    glutDisplayFunc(display_func);
-
-    glShadeModel(GL_FLAT);
-    glClearColor(background_colour, background_colour, background_colour, 1);
-
-    // Begin rendering.
-    glutMainLoop();
-
-    // Cleanup OpenGL.
-    glutDestroyWindow(win_id);
-}
-
-
-
-
-
 
 
 
@@ -188,14 +65,14 @@ void get_sorted_points_from_line_segment(size_t ls_index, vector<size_t>& points
 
 
 
-void get_all_ls_neighbours(void)
+void get_all_line_segment_neighbours(void)
 {
-    ls_neighbours.clear();
+    line_segment_neighbours.clear();
 
     vector<size_t> default_lookup;
 
     for (size_t i = 0; i < line_segments.size(); i++)
-        ls_neighbours[i] = default_lookup;
+        line_segment_neighbours[i] = default_lookup;
 
     cout << "Enumerating shared faces" << endl;
 
@@ -224,8 +101,8 @@ void get_all_ls_neighbours(void)
 
         count++;
 
-        ls_neighbours[ci->second[0]].push_back(ci->second[1]);
-        ls_neighbours[ci->second[1]].push_back(ci->second[0]);
+        line_segment_neighbours[ci->second[0]].push_back(ci->second[1]);
+        line_segment_neighbours[ci->second[1]].push_back(ci->second[0]);
     }
 }
 
@@ -284,7 +161,7 @@ void get_vertices_from_vertex_2(void)
 
     vertex_set.clear();
 
-    get_all_ls_neighbours();
+    get_all_line_segment_neighbours();
 
     cout << "Calculating normals" << endl;
     fn.resize(line_segments.size());
@@ -307,8 +184,8 @@ void get_vertices_from_vertex_2(void)
         const size_t first_index = last_unprocessed_index;
 
         prev_index = first_index;
-        curr_index = ls_neighbours[first_index][0];
-        next_index = ls_neighbours[curr_index][0];
+        curr_index = line_segment_neighbours[first_index][0];
+        next_index = line_segment_neighbours[curr_index][0];
 
         tri_index t;
         t.prev_index = prev_index;
@@ -320,26 +197,26 @@ void get_vertices_from_vertex_2(void)
         // For each disconnected object in the image
         do
         {
-            size_t index0 = ls_neighbours[curr_index][0];
-            size_t index1 = ls_neighbours[curr_index][1];
+            size_t index0 = line_segment_neighbours[curr_index][0];
+            size_t index1 = line_segment_neighbours[curr_index][1];
 
             if (index0 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index1;
-                next_index = ls_neighbours[curr_index][1];
+                next_index = line_segment_neighbours[curr_index][1];
 
                 if (prev_index == next_index)
-                    next_index = ls_neighbours[curr_index][0];
+                    next_index = line_segment_neighbours[curr_index][0];
             }
             else if (index1 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index0;
-                next_index = ls_neighbours[curr_index][0];
+                next_index = line_segment_neighbours[curr_index][0];
 
                 if (prev_index == next_index)
-                    next_index = ls_neighbours[curr_index][1];
+                    next_index = line_segment_neighbours[curr_index][1];
             }
 
             tri_index t;
@@ -371,12 +248,12 @@ void get_vertices_from_vertex_2(void)
             size_t first_vertex_index = 0;
             size_t last_vertex_index = 0;
 
-            if (ls_neighbours[prev_index][0] == curr_index)
+            if (line_segment_neighbours[prev_index][0] == curr_index)
                 first_vertex_index = 0;
             else
                 first_vertex_index = 1;
 
-            if (ls_neighbours[next_index][0] == curr_index)
+            if (line_segment_neighbours[next_index][0] == curr_index)
                 last_vertex_index = 0;
             else
                 last_vertex_index = 1;
