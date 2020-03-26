@@ -301,6 +301,7 @@ void get_vertices_from_vertex_2(void)
 
     vector<tri_index> tri_indices;
 
+    // Get the neighbours for each line segment
     do
     {
         const size_t first_index = last_unfound_index;
@@ -316,6 +317,7 @@ void get_vertices_from_vertex_2(void)
         tri_indices.push_back(t);
         processed_indices.insert(curr_index);
 
+        // For each disconnected object in the image
         do
         {
             size_t index0 = ls_neighbours[curr_index][0];
@@ -358,7 +360,8 @@ void get_vertices_from_vertex_2(void)
                 break;
             }
         }
-
+        
+        // Use the neighbour data to calculate the line segment normals
         for (size_t i = 0; i < tri_indices.size(); i++)
         {
             size_t prev_index = tri_indices[i].prev_index;
