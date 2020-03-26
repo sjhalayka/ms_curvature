@@ -56,9 +56,6 @@ public:
 		// Max 6 vertices per grid cube.
 		static vertex_2 a, b, c, d, e, f;
 		
-		// Max three triangles per grid cube.
-		static triangle t;
-
 		// Max two image edge line segments per grid cube.
 		static line_segment ls;
 

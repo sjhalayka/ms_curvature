@@ -382,8 +382,6 @@ void get_vertices_from_vertex_2(void)
                 last_vertex_index = 1;
 
             vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
-            edge.normalize();
-
             fn[curr_index] = vertex_2(-edge.y, edge.x);
             fn[curr_index].normalize();
         }
