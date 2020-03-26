@@ -290,8 +290,8 @@ void get_vertices_from_vertex_2(void)
     fn.resize(line_segments.size());
 
     size_t num_objects = 0;
-    bool some_unfound = true;
-    size_t last_unfound_index = 0;
+
+    size_t last_unprocessed_index = 0;
 
     size_t prev_index = 0;
     size_t curr_index = 0;
@@ -304,7 +304,7 @@ void get_vertices_from_vertex_2(void)
     // Get the neighbours for each line segment
     do
     {
-        const size_t first_index = last_unfound_index;
+        const size_t first_index = last_unprocessed_index;
 
         prev_index = first_index;
         curr_index = ls_neighbours[first_index][0];
@@ -355,7 +355,7 @@ void get_vertices_from_vertex_2(void)
         {
             if (processed_indices.end() == processed_indices.find(i))
             {
-                last_unfound_index = i;
+                last_unprocessed_index = i;
 
                 break;
             }
