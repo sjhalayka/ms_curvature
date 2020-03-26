@@ -17,8 +17,20 @@ public:
 		value[0] = value[1] = value[2] = value[3] = 0;
 	}
 
-	inline vertex_2 vertex_interp(const vertex_2 &p1, const vertex_2 &p2, const double v1, const double v2, const double isovalue)
+	inline vertex_2 vertex_interp(vertex_2 p1, vertex_2 p2, double v1, double v2, const double isovalue)
 	{
+		// Sort the vertices to avoid cracks in the mesh
+		if (p2 < p1)
+		{
+			vertex_2 tv = p1;
+			p1 = p2;
+			p2 = tv;
+
+			double td = v1;
+			v1 = v2;
+			v2 = td;
+		}
+
 		static vertex_2 temp;
 		static double mu;
 
