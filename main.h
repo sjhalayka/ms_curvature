@@ -29,17 +29,6 @@ using std::complex;
 
 
 
-// Image objects and parameters.
-tga tga_texture;
-float_grayscale luma;
-
-double template_width = 0;
-double template_height = 0;
-double step_size = 0;
-double isovalue = 0;
-double inverse_width = 0;
-double grid_x_min = 0;
-double grid_y_max = 0;
 
 // Marching squares-related geometric primitives.
 vector<line_segment> line_segments;
