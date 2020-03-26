@@ -56,7 +56,7 @@ public:
 		// Max 6 vertices per grid cube.
 		static vertex_2 a, b, c, d, e, f;
 		
-		// Max two image edge line segments per grid cube.
+		// Max two line segments per grid cube.
 		static line_segment ls;
 
 		// Handle the 16 cases manually.
@@ -68,7 +68,6 @@ public:
 				//10
 				//00
 
-				a = vertex[0];
 				b = vertex_interp(vertex[0], vertex[1], value[0], value[1], isovalue);
 				c = vertex_interp(vertex[0], vertex[3], value[0], value[3], isovalue);
 
@@ -86,7 +85,6 @@ public:
 				//10
 
 				a = vertex_interp(vertex[1], vertex[0], value[1], value[0], isovalue);
-				b = vertex[1];
 				c = vertex_interp(vertex[1], vertex[2], value[1], value[2], isovalue);
 
 				ls.vertex[0] = a;
@@ -102,7 +100,6 @@ public:
 				//01
 
 				a = vertex_interp(vertex[2], vertex[1], value[2], value[1], isovalue);
-				b = vertex[2];
 				c = vertex_interp(vertex[2], vertex[3], value[2], value[3], isovalue);
 
 				ls.vertex[0] = a;
@@ -119,7 +116,6 @@ public:
 
 				a = vertex_interp(vertex[3], vertex[0], value[3], value[0], isovalue);
 				b = vertex_interp(vertex[3], vertex[2], value[3], value[2], isovalue);
-				c = vertex[3];
 
 				ls.vertex[0] = a;
 				ls.vertex[1] = b;
@@ -135,8 +131,6 @@ public:
 				//10
 				//10
 
-				a = vertex[0];
-				b = vertex[1];
 				c = vertex_interp(vertex[1], vertex[2], value[1], value[2], isovalue);
 				d = vertex_interp(vertex[0], vertex[3], value[0], value[3], isovalue);
 
@@ -153,8 +147,6 @@ public:
 				//11
 
 				a = vertex_interp(vertex[1], vertex[0], value[1], value[0], isovalue);
-				b = vertex[1];
-				c = vertex[2];
 				d = vertex_interp(vertex[2], vertex[3], value[2], value[3], isovalue);
 
 				ls.vertex[0] = a;
@@ -169,10 +161,8 @@ public:
 				//11
 				//00
 
-				a = vertex[0];
 				b = vertex_interp(vertex[0], vertex[1], value[0], value[1], isovalue);
 				c = vertex_interp(vertex[3], vertex[2], value[3], value[2], isovalue);
-				d = vertex[3];
 
 				ls.vertex[0] = b;
 				ls.vertex[1] = c;
@@ -188,8 +178,6 @@ public:
 
 				a = vertex_interp(vertex[3], vertex[0], value[3], value[0], isovalue);
 				b = vertex_interp(vertex[2], vertex[1], value[2], value[1], isovalue);
-				c = vertex[2];
-				d = vertex[3];
 
 				ls.vertex[0] = a;
 				ls.vertex[1] = b;
@@ -205,11 +193,9 @@ public:
 				//10
 				//01
 
-				a = vertex[0];
 				b = vertex_interp(vertex[0], vertex[1], value[0], value[1], isovalue);
 				c = vertex_interp(vertex[0], vertex[3], value[0], value[3], isovalue);
 				d = vertex_interp(vertex[2], vertex[1], value[2], value[1], isovalue);
-				e = vertex[2];
 				f = vertex_interp(vertex[2], vertex[3], value[2], value[3], isovalue);
 
 				ls.vertex[0] = b;
@@ -229,11 +215,9 @@ public:
 				//10
 
 				a = vertex_interp(vertex[1], vertex[0], value[1], value[0], isovalue);
-				b = vertex[1];
 				c = vertex_interp(vertex[1], vertex[2], value[1], value[2], isovalue);
 				d = vertex_interp(vertex[3], vertex[0], value[3], value[0], isovalue);
 				e = vertex_interp(vertex[3], vertex[2], value[3], value[2], isovalue);
-				f = vertex[3];
 
 				ls.vertex[0] = a;
 				ls.vertex[1] = c;
@@ -253,9 +237,6 @@ public:
 				//10
 				//11
 
-				a = vertex[0];
-				b = vertex[1];
-				c = vertex[2];
 				d = vertex_interp(vertex[2], vertex[3], value[2], value[3], isovalue);
 				e = vertex_interp(vertex[0], vertex[3], value[0], value[3], isovalue);
 
@@ -271,11 +252,8 @@ public:
 				//11
 				//10
 
-				a = vertex[0];
-				b = vertex[1];
 				c = vertex_interp(vertex[1], vertex[2], value[1], value[2], isovalue);
 				d = vertex_interp(vertex[3], vertex[2], value[3], value[2], isovalue);
-				e = vertex[3];
 
 				ls.vertex[0] = c;
 				ls.vertex[1] = d;
@@ -289,11 +267,8 @@ public:
 				//11
 				//01
 
-				a = vertex[0];
 				b = vertex_interp(vertex[0], vertex[1], value[0], value[1], isovalue);
 				c = vertex_interp(vertex[2], vertex[1], value[2], value[1], isovalue);
-				d = vertex[2];
-				e = vertex[3];
 
 				ls.vertex[0] = b;
 				ls.vertex[1] = c;
@@ -308,9 +283,6 @@ public:
 				//11
 
 				a = vertex_interp(vertex[1], vertex[0], value[1], value[0], isovalue);
-				b = vertex[1];
-				c = vertex[2];
-				d = vertex[3];
 				e = vertex_interp(vertex[3], vertex[0], value[3], value[0], isovalue);
 
 				ls.vertex[0] = a;
