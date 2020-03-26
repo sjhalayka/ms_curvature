@@ -237,7 +237,6 @@ void process_line_segments(void)
             if (processed_indices.end() == processed_indices.find(i))
             {
                 last_unprocessed_index = i;
-
                 break;
             }
         }
