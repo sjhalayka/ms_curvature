@@ -132,7 +132,7 @@ void process_line_segments(void)
 
     cout << "Assigning vertex indices to line segments" << endl;
 
-    // Find the three vertices for each line segment, by index.
+    // Find the two vertices for each line segment, by index.
     set<vertex_2>::iterator find_iter;
 
     for (vector<line_segment>::iterator i = line_segments.begin(); i != line_segments.end(); i++)
