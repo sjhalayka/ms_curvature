@@ -41,7 +41,7 @@ double inverse_width = 0;
 double grid_x_min = 0;
 double grid_y_max = 0;
 
-// Marching squares-generated geometric primitives.
+// Marching squares-related geometric primitives.
 vector<line_segment> line_segments;
 map<size_t, vector<size_t> > line_segment_neighbours;
 vector<vertex_2> face_normals;
@@ -217,6 +217,10 @@ void process_line_segments(void)
 
                 if (prev_index == next_index)
                     next_index = line_segment_neighbours[curr_index][1];
+            }
+            else
+            {
+                // This should never happen.
             }
 
             tri_index t;

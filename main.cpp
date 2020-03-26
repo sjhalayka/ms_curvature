@@ -18,6 +18,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	// Not square.
 	if (luma.px != luma.py)
 	{
 		cout << "Template must be square." << endl;
@@ -25,29 +26,24 @@ int main(int argc, char **argv)
 	}
 
 	template_width = 1.0;
-
 	inverse_width = 1.0/template_width;
 	step_size = template_width/static_cast<double>(luma.px - 1);
 	template_height = step_size*(luma.py - 1); // Assumes square pixels.
-
 	isovalue = 0.5;
+	grid_x_min = -template_width / 2.0;
+	grid_y_max = template_height / 2.0;
 
 	// Print basic information.
 	cout << "Template info: " << endl;
 	cout << luma.px << " x " << luma.py << " pixels" << endl;
 	cout << template_width << " x " << template_height << " metres" << endl;
-	cout << endl;
-
-	grid_x_min = -template_width/2.0;
-	grid_y_max = template_height/2.0;
-	
+	cout << endl;	
 	cout << "Grid info: " << endl;
 	cout << luma.px - 1 << " x " << luma.py - 1 << " grid squares" << endl;
 	cout << "x min (-x max): " << grid_x_min << endl;
 	cout << "y min (-y max): " << -grid_y_max << endl;
 	cout << "Isovalue: " << isovalue << endl;
 	cout << endl;
-
 	cout << "Generating geometric primitives..." << endl;
 	cout << endl;
 
