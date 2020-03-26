@@ -68,7 +68,6 @@ int main(void)
 		{
 			// Corner vertex order: 03
 			//                      12
-			// e.g.: clockwise, as in OpenGL
 
 			grid_square g;
 
