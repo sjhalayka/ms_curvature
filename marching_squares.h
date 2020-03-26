@@ -33,7 +33,7 @@ public:
 	inline void generate_primitives(vector<line_segment> &line_segments, const double isovalue)
 	{
 		// Identify which of the 4 corners of the square are within the isosurface.
-		// Max 16 cases. Only 14 cases line segments.
+		// Max 16 cases. Only 14 cases create line segments.
 
 		// Corner vertex order: 03
 		//                      12
