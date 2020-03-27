@@ -26,15 +26,7 @@ using std::sort;
 
 
 
-// Marching squares-related geometric primitives.
-class line_segment_data
-{
-public:
-    vector<line_segment> line_segments;
-    map<size_t, vector<size_t> > line_segment_neighbours;
-    vector<vertex_2> face_normals;
-    vector<vertex_2> vertices;
-};
+
 
 
 

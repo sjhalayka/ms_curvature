@@ -4,6 +4,14 @@
 
 #include <cmath>
 
+
+#include <vector>
+using std::vector;
+
+#include <map>
+using std::map;
+
+
 class tri_index
 {
 public:
@@ -153,6 +161,18 @@ public:
 	{
 		return sqrt( pow(vertex[0].x - vertex[1].x, 2.0) + pow(vertex[0].y - vertex[1].y, 2.0) );
 	}
+};
+
+
+
+// Marching squares-related geometric primitives.
+class line_segment_data
+{
+public:
+	vector<line_segment> line_segments;
+	map<size_t, vector<size_t> > line_segment_neighbours;
+	vector<vertex_2> face_normals;
+	vector<vertex_2> vertices;
 };
 
 
