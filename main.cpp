@@ -21,14 +21,14 @@ int main(void)
 		return 1;
 	}
 
-	// Too small.
+	// Too small
 	if(luma.px < 3 || luma.py < 3)
 	{
 		cout << "Template must be at least 3x3 pixels in size." << endl;
 		return 2;
 	}
 
-	// Not square.
+	// Not square
 	if (luma.px != luma.py)
 	{
 		cout << "Template must be square." << endl;
@@ -66,7 +66,7 @@ int main(void)
 
 	size_t box_count = 0;
 
-	// Begin march
+	// Begin march over the plane
 	for(size_t y = 0; y < luma.py - 1; y++, grid_y_pos -= step_size, grid_x_pos = grid_x_min)
 	{
 		for(size_t x = 0; x < luma.px - 1; x++, grid_x_pos += step_size)
@@ -93,6 +93,8 @@ int main(void)
 
 			size_t new_ls_size = lsd.line_segments.size();
 
+			// Box-counting dimension is very simple to calculate
+			// when using Marching Squares
 			if (curr_ls_size != new_ls_size)
 				box_count++;
 		}
@@ -100,6 +102,8 @@ int main(void)
 
 
 	// Ultimately, this enumerates the line segment neighbour data
+	// The body of this function is a little complicated because we 
+	// expect no set order for the vertices in each line segment
 	process_line_segments(lsd);
 
 
