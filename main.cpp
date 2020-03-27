@@ -3,23 +3,19 @@
 
 int main(void)
 {
-	// Image objects and parameters.
+	// Image objects.
 	tga tga_texture;
 	float_grayscale luma;
-
-	double template_width = 0;
-	double template_height = 0;
-	double step_size = 0;
-	double isovalue = 0;
-	double grid_x_min = 0;
-	double grid_y_max = 0;
 
 	// Read a 24-bit uncompressed/non-RLE Targa file, and then convert it to a floating point grayscale image.
 	cout << "Reading figure1.tga" << endl;
 	cout << endl;
 
-	if(false == convert_tga_to_float_grayscale("figure1.tga", tga_texture, luma, true, true, true))
+	if (false == convert_tga_to_float_grayscale("figure1.tga", tga_texture, luma, true, true, true))
+	{
+		cout << "Error reading figure1.tga" << endl;
 		return 0;
+	}
 
 	// Too small.
 	if(luma.px < 3 || luma.py < 3)
@@ -35,12 +31,13 @@ int main(void)
 		return 0;
 	}
 
-	template_width = 1.0;
-	step_size = template_width/static_cast<double>(luma.px - 1);
-	template_height = step_size*(luma.py - 1); // Assumes square pixels.
-	isovalue = 0.5;
-	grid_x_min = -template_width / 2.0;
-	grid_y_max = template_height / 2.0;
+	// Marching Squares parameters.
+	double template_width = 1.0;
+	double step_size = template_width/static_cast<double>(luma.px - 1);
+	double template_height = step_size*(luma.py - 1); // Assumes square pixels.
+	double isovalue = 0.5;
+	double grid_x_min = -template_width / 2.0;
+	double grid_y_max = template_height / 2.0;
 
 	// Print basic information.
 	cout << "Template info: " << endl;
@@ -83,6 +80,7 @@ int main(void)
 
 			size_t curr_ls_size = line_segments.size();
 
+			// Add primitives to line segment vector
 			g.generate_primitives(line_segments, isovalue);
 
 			size_t new_ls_size = line_segments.size();
@@ -92,7 +90,7 @@ int main(void)
 		}
 	}
 
-
+	// Ultimately, this enumerates the line segment neighbour data
 	process_line_segments();
 
 	// Calculate curvature-based dimension
