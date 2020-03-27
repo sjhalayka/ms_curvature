@@ -31,6 +31,7 @@ int main(void)
 		return 3;
 	}
 
+
 	// Marching Squares parameters.
 	line_segment_data lsd;
 	double template_width = 1.0;
@@ -39,6 +40,7 @@ int main(void)
 	double isovalue = 0.5;
 	double grid_x_min = -template_width / 2.0;
 	double grid_y_max = template_height / 2.0;
+
 
 	// Print basic information.
 	cout << "Template info: " << endl;
@@ -53,6 +55,7 @@ int main(void)
 	cout << endl;
 	cout << "Generating geometric primitives..." << endl;
 	cout << endl;
+
 
 	double grid_x_pos = grid_x_min; // Start at minimum x.
 	double grid_y_pos = grid_y_max; // Start at maximum y.
@@ -91,8 +94,10 @@ int main(void)
 		}
 	}
 
+
 	// Ultimately, this enumerates the line segment neighbour data
 	process_line_segments(lsd);
+
 
 	// Calculate curvature-based dimension
 	double K = 0;

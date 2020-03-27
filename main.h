@@ -23,17 +23,6 @@ using std::endl;
 using std::sort;
 
 
-
-
-
-
-
-
-
-
-
-
-
 void get_sorted_points_from_line_segment(const line_segment_data &lsd, size_t ls_index, vector<size_t>& points)
 {
     points.resize(2);
@@ -47,8 +36,6 @@ void get_sorted_points_from_line_segment(const line_segment_data &lsd, size_t ls
     points[0] = sorted_vertex_indices[0];
     points[1] = sorted_vertex_indices[1];
 }
-
-
 
 void get_all_line_segment_neighbours(line_segment_data &lsd)
 {
@@ -90,8 +77,6 @@ void get_all_line_segment_neighbours(line_segment_data &lsd)
         lsd.line_segment_neighbours[ci->second[1]].push_back(ci->second[0]);
     }
 }
-
-
 
 void process_line_segments(line_segment_data &lsd)
 {
