@@ -7,10 +7,14 @@ int main(void)
 	tga tga_texture;
 	float_grayscale luma;
 
-	// Read a 24-bit uncompressed/non-RLE Targa file, and then convert it to a floating point grayscale image.
+	// Read a 24-bit uncompressed/non-RLE Targa file, and then convert it to a 
+	// floating point grayscale image
 	cout << "Reading figure1.tga" << endl;
 	cout << endl;
 
+	// Make absolutely sure that the make_black_border parameter is set to true
+	// This ensures that the line segment mesh(es) are closed, and so 
+	// there are exactly two line segment neighbours per line segment
 	if (false == convert_tga_to_float_grayscale("figure1.tga", tga_texture, luma, true, true, true))
 	{
 		cout << "Error reading figure1.tga" << endl;
@@ -32,7 +36,7 @@ int main(void)
 	}
 
 
-	// Marching Squares parameters.
+	// Marching Squares parameters
 	line_segment_data lsd;
 	double template_width = 1.0;
 	double step_size = template_width/static_cast<double>(luma.px - 1);
@@ -42,7 +46,7 @@ int main(void)
 	double grid_y_max = template_height / 2.0;
 
 
-	// Print basic information.
+	// Print basic data
 	cout << "Template info: " << endl;
 	cout << luma.px << " x " << luma.py << " pixels" << endl;
 	cout << template_width << " x " << template_height << " metres" << endl;
@@ -62,7 +66,7 @@ int main(void)
 
 	size_t box_count = 0;
 
-	// Begin march.
+	// Begin march
 	for(size_t y = 0; y < luma.py - 1; y++, grid_y_pos -= step_size, grid_x_pos = grid_x_min)
 	{
 		for(size_t x = 0; x < luma.px - 1; x++, grid_x_pos += step_size)
