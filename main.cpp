@@ -61,8 +61,8 @@ int main(void)
 	cout << endl;
 
 
-	double grid_x_pos = grid_x_min; // Start at minimum x.
-	double grid_y_pos = grid_y_max; // Start at maximum y.
+	double grid_x_pos = grid_x_min; // Start at minimum x
+	double grid_y_pos = grid_y_max; // Start at maximum y
 
 	size_t box_count = 0;
 
