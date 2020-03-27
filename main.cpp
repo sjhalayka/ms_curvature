@@ -14,24 +14,25 @@ int main(void)
 	if (false == convert_tga_to_float_grayscale("figure1.tga", tga_texture, luma, true, true, true))
 	{
 		cout << "Error reading figure1.tga" << endl;
-		return 0;
+		return 1;
 	}
 
 	// Too small.
 	if(luma.px < 3 || luma.py < 3)
 	{
 		cout << "Template must be at least 3x3 pixels in size." << endl;
-		return 0;
+		return 2;
 	}
 
 	// Not square.
 	if (luma.px != luma.py)
 	{
 		cout << "Template must be square." << endl;
-		return 0;
+		return 3;
 	}
 
 	// Marching Squares parameters.
+	line_segment_data lsd;
 	double template_width = 1.0;
 	double step_size = template_width/static_cast<double>(luma.px - 1);
 	double template_height = step_size*(luma.py - 1); // Assumes square pixels.
@@ -78,12 +79,12 @@ int main(void)
 			g.value[2] = luma.pixel_data[(y + 1)*luma.px + (x + 1)];
 			g.value[3] = luma.pixel_data[y*luma.px + (x + 1)];
 
-			size_t curr_ls_size = line_segments.size();
+			size_t curr_ls_size = lsd.line_segments.size();
 
 			// Add primitives to line segment vector
-			g.generate_primitives(line_segments, isovalue);
+			g.generate_primitives(lsd.line_segments, isovalue);
 
-			size_t new_ls_size = line_segments.size();
+			size_t new_ls_size = lsd.line_segments.size();
 
 			if (curr_ls_size != new_ls_size)
 				box_count++;
@@ -91,25 +92,25 @@ int main(void)
 	}
 
 	// Ultimately, this enumerates the line segment neighbour data
-	process_line_segments();
+	process_line_segments(lsd);
 
 	// Calculate curvature-based dimension
 	double K = 0;
 
-	for (size_t i = 0; i < line_segments.size(); i++)
+	for (size_t i = 0; i < lsd.line_segments.size(); i++)
 	{
-		if (line_segment_neighbours[i].size() != 2)
+		if (lsd.line_segment_neighbours[i].size() != 2)
 		{
 			cout << "Error" << endl;
-			return 1;
+			return 4;
 		}
 
-		size_t neighbour_0_index = line_segment_neighbours[i][0];
-		size_t neighbour_1_index = line_segment_neighbours[i][1];
+		size_t neighbour_0_index = lsd.line_segment_neighbours[i][0];
+		size_t neighbour_1_index = lsd.line_segment_neighbours[i][1];
 
-		vertex_2 this_normal = face_normals[i];
-		vertex_2 neighbour_0_normal = face_normals[neighbour_0_index];
-		vertex_2 neighbour_1_normal = face_normals[neighbour_1_index];
+		vertex_2 this_normal = lsd.face_normals[i];
+		vertex_2 neighbour_0_normal = lsd.face_normals[neighbour_0_index];
+		vertex_2 neighbour_1_normal = lsd.face_normals[neighbour_1_index];
 
 		double d_i = this_normal.dot(neighbour_0_normal) + this_normal.dot(neighbour_1_normal);
 		d_i /= 2.0;
@@ -119,7 +120,7 @@ int main(void)
 		K += k_i;
 	}
 
-	K /= static_cast<double>(line_segments.size());
+	K /= static_cast<double>(lsd.line_segments.size());
 
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
 	cout << "Box-counting dimension:    " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;

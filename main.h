@@ -27,22 +27,30 @@ using std::sort;
 
 
 // Marching squares-related geometric primitives.
-vector<line_segment> line_segments;
-map<size_t, vector<size_t> > line_segment_neighbours;
-vector<vertex_2> face_normals;
-vector<vertex_2> vertices;
+class line_segment_data
+{
+public:
+    vector<line_segment> line_segments;
+    map<size_t, vector<size_t> > line_segment_neighbours;
+    vector<vertex_2> face_normals;
+    vector<vertex_2> vertices;
+};
 
 
 
-void get_sorted_points_from_line_segment(size_t ls_index, vector<size_t>& points)
+
+
+
+
+void get_sorted_points_from_line_segment(const line_segment_data &lsd, size_t ls_index, vector<size_t>& points)
 {
     points.resize(2);
 
     vector<size_t> sorted_vertex_indices;
 
     // do end point 0 and 1
-    sorted_vertex_indices.push_back(line_segments[ls_index].vertex[0].index);
-    sorted_vertex_indices.push_back(line_segments[ls_index].vertex[1].index);
+    sorted_vertex_indices.push_back(lsd.line_segments[ls_index].vertex[0].index);
+    sorted_vertex_indices.push_back(lsd.line_segments[ls_index].vertex[1].index);
     sort(sorted_vertex_indices.begin(), sorted_vertex_indices.end());
     points[0] = sorted_vertex_indices[0];
     points[1] = sorted_vertex_indices[1];
@@ -50,26 +58,26 @@ void get_sorted_points_from_line_segment(size_t ls_index, vector<size_t>& points
 
 
 
-void get_all_line_segment_neighbours(void)
+void get_all_line_segment_neighbours(line_segment_data &lsd)
 {
-    line_segment_neighbours.clear();
+    lsd.line_segment_neighbours.clear();
 
     vector<size_t> default_lookup;
 
-    for (size_t i = 0; i < line_segments.size(); i++)
-        line_segment_neighbours[i] = default_lookup;
+    for (size_t i = 0; i < lsd.line_segments.size(); i++)
+        lsd.line_segment_neighbours[i] = default_lookup;
 
     cout << "Enumerating shared faces" << endl;
 
     map<size_t, vector<size_t> > neighbours;
 
-    for (size_t i = 0; i < line_segments.size(); i++)
+    for (size_t i = 0; i < lsd.line_segments.size(); i++)
     {
         if (i % 100 == 0)
-            cout << i + 1 << " of " << line_segments.size() << endl;
+            cout << i + 1 << " of " << lsd.line_segments.size() << endl;
 
         vector<size_t> points;
-        get_sorted_points_from_line_segment(i, points);
+        get_sorted_points_from_line_segment(lsd, i, points);
 
         for (size_t j = 0; j < points.size(); j++)
             neighbours[points[j]].push_back(i);
@@ -86,19 +94,19 @@ void get_all_line_segment_neighbours(void)
 
         count++;
 
-        line_segment_neighbours[ci->second[0]].push_back(ci->second[1]);
-        line_segment_neighbours[ci->second[1]].push_back(ci->second[0]);
+        lsd.line_segment_neighbours[ci->second[0]].push_back(ci->second[1]);
+        lsd.line_segment_neighbours[ci->second[1]].push_back(ci->second[0]);
     }
 }
 
 
 
-void process_line_segments(void)
+void process_line_segments(line_segment_data &lsd)
 {
-    face_normals.clear();
-    vertices.clear();
+    lsd.face_normals.clear();
+    lsd.vertices.clear();
 
-    if (0 == line_segments.size())
+    if (0 == lsd.line_segments.size())
         return;
 
     cout << "Welding vertices" << endl;
@@ -106,7 +114,7 @@ void process_line_segments(void)
     // Insert unique vertices into set.
     set<vertex_2> vertex_set;
 
-    for (vector<line_segment>::const_iterator i = line_segments.begin(); i != line_segments.end(); i++)
+    for (vector<line_segment>::const_iterator i = lsd.line_segments.begin(); i != lsd.line_segments.end(); i++)
     {
         vertex_set.insert(i->vertex[0]);
         vertex_set.insert(i->vertex[1]);
@@ -119,15 +127,15 @@ void process_line_segments(void)
     // Add indices to the vertices.
     for (set<vertex_2>::const_iterator i = vertex_set.begin(); i != vertex_set.end(); i++)
     {
-        size_t index = vertices.size();
-        vertices.push_back(*i);
-        vertices[index].index = index;
+        size_t index = lsd.vertices.size();
+        lsd.vertices.push_back(*i);
+        lsd.vertices[index].index = index;
     }
 
     vertex_set.clear();
 
     // Re-insert modifies vertices into set.
-    for (vector<vertex_2>::const_iterator i = vertices.begin(); i != vertices.end(); i++)
+    for (vector<vertex_2>::const_iterator i = lsd.vertices.begin(); i != lsd.vertices.end(); i++)
         vertex_set.insert(*i);
 
     cout << "Assigning vertex indices to line segments" << endl;
@@ -135,7 +143,7 @@ void process_line_segments(void)
     // Find the two vertices for each line segment, by index.
     set<vertex_2>::iterator find_iter;
 
-    for (vector<line_segment>::iterator i = line_segments.begin(); i != line_segments.end(); i++)
+    for (vector<line_segment>::iterator i = lsd.line_segments.begin(); i != lsd.line_segments.end(); i++)
     {
         find_iter = vertex_set.find(i->vertex[0]);
         i->vertex[0].index = find_iter->index;
@@ -146,10 +154,10 @@ void process_line_segments(void)
 
     vertex_set.clear();
 
-    get_all_line_segment_neighbours();
+    get_all_line_segment_neighbours(lsd);
 
     cout << "Calculating normals" << endl;
-    face_normals.resize(line_segments.size());
+    lsd.face_normals.resize(lsd.line_segments.size());
 
     size_t num_objects = 0;
     size_t last_unprocessed_index = 0;
@@ -163,8 +171,8 @@ void process_line_segments(void)
         const size_t first_index = last_unprocessed_index;
 
         size_t prev_index = first_index;
-        size_t curr_index = line_segment_neighbours[first_index][0];
-        size_t next_index = line_segment_neighbours[curr_index][0];
+        size_t curr_index = lsd.line_segment_neighbours[first_index][0];
+        size_t next_index = lsd.line_segment_neighbours[curr_index][0];
 
         tri_index t;
         t.prev_index = prev_index;
@@ -176,26 +184,26 @@ void process_line_segments(void)
         // For each disconnected object in the image
         do
         {
-            size_t index0 = line_segment_neighbours[curr_index][0];
-            size_t index1 = line_segment_neighbours[curr_index][1];
+            size_t index0 = lsd.line_segment_neighbours[curr_index][0];
+            size_t index1 = lsd.line_segment_neighbours[curr_index][1];
 
             if (index0 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index1;
-                next_index = line_segment_neighbours[curr_index][1];
+                next_index = lsd.line_segment_neighbours[curr_index][1];
 
                 if (prev_index == next_index)
-                    next_index = line_segment_neighbours[curr_index][0];
+                    next_index = lsd.line_segment_neighbours[curr_index][0];
             }
             else if (index1 == prev_index)
             {
                 prev_index = curr_index;
                 curr_index = index0;
-                next_index = line_segment_neighbours[curr_index][0];
+                next_index = lsd.line_segment_neighbours[curr_index][0];
 
                 if (prev_index == next_index)
-                    next_index = line_segment_neighbours[curr_index][1];
+                    next_index = lsd.line_segment_neighbours[curr_index][1];
             }
             else
             {
@@ -211,7 +219,7 @@ void process_line_segments(void)
 
         } while (curr_index != first_index);
 
-        for (size_t i = 0; i < face_normals.size(); i++)
+        for (size_t i = 0; i < lsd.face_normals.size(); i++)
         {
             if (processed_indices.end() == processed_indices.find(i))
             {
@@ -230,19 +238,19 @@ void process_line_segments(void)
             size_t first_vertex_index = 0;
             size_t last_vertex_index = 0;
 
-            if (line_segment_neighbours[prev_index][0] == curr_index)
+            if (lsd.line_segment_neighbours[prev_index][0] == curr_index)
                 first_vertex_index = 0;
             else
                 first_vertex_index = 1;
 
-            if (line_segment_neighbours[next_index][0] == curr_index)
+            if (lsd.line_segment_neighbours[next_index][0] == curr_index)
                 last_vertex_index = 0;
             else
                 last_vertex_index = 1;
 
-            vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
-            face_normals[curr_index] = vertex_2(-edge.y, edge.x);
-            face_normals[curr_index].normalize();
+            vertex_2 edge = lsd.line_segments[prev_index].vertex[first_vertex_index] - lsd.line_segments[next_index].vertex[last_vertex_index];
+            lsd.face_normals[curr_index] = vertex_2(-edge.y, edge.x);
+            lsd.face_normals[curr_index].normalize();
         }
  
         if(num_objects % 100 == 0)
@@ -250,7 +258,7 @@ void process_line_segments(void)
         
         num_objects++;
 
-    } while (processed_indices.size() != face_normals.size());
+    } while (processed_indices.size() != lsd.face_normals.size());
 
     cout << "Found " << num_objects << " object(s)." << endl;
 }
