@@ -306,37 +306,39 @@ public:
                 }
             }
 
-            // Use the neighbour data to calculate the line segment normals
-            for (size_t i = 0; i < tri_indices.size(); i++)
-            {
-                size_t prev_index = tri_indices[i].prev_index;
-                size_t curr_index = tri_indices[i].curr_index;
-                size_t next_index = tri_indices[i].next_index;
-
-                size_t first_vertex_index = 0;
-                size_t last_vertex_index = 0;
-
-                if (line_segment_neighbours[prev_index][0] == curr_index)
-                    first_vertex_index = 0;
-                else
-                    first_vertex_index = 1;
-
-                if (line_segment_neighbours[next_index][0] == curr_index)
-                    last_vertex_index = 0;
-                else
-                    last_vertex_index = 1;
-
-                vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
-                face_normals[curr_index] = vertex_2(-edge.y, edge.x);
-                face_normals[curr_index].normalize();
-            }
-
             if (num_objects % 100 == 0)
                 cout << "Found object " << num_objects + 1 << endl;
 
             num_objects++;
 
         } while (processed_indices.size() != face_normals.size());
+
+
+        // Finally, use the neighbour data to calculate the line segment normals
+        for (size_t i = 0; i < tri_indices.size(); i++)
+        {
+            size_t prev_index = tri_indices[i].prev_index;
+            size_t curr_index = tri_indices[i].curr_index;
+            size_t next_index = tri_indices[i].next_index;
+
+            size_t first_vertex_index = 0;
+            size_t last_vertex_index = 0;
+
+            if (line_segment_neighbours[prev_index][0] == curr_index)
+                first_vertex_index = 0;
+            else
+                first_vertex_index = 1;
+
+            if (line_segment_neighbours[next_index][0] == curr_index)
+                last_vertex_index = 0;
+            else
+                last_vertex_index = 1;
+
+            vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
+            face_normals[curr_index] = vertex_2(-edge.y, edge.x);
+            face_normals[curr_index].normalize();
+        }
+
 
         cout << "Found " << num_objects << " object(s)." << endl;
     }
