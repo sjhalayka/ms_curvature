@@ -240,7 +240,11 @@ public:
         size_t num_objects = 0;
         size_t last_unprocessed_index = 0;
 
-        set<size_t> processed_indices;
+        set<size_t> unprocessed_indices;
+
+        for (size_t i = 0; i < line_segments.size(); i++)
+            unprocessed_indices.insert(i);
+
         vector<tri_index> tri_indices;
 
         // Get the neighbours for each line segment
@@ -257,7 +261,7 @@ public:
             t.curr_index = curr_index;
             t.next_index = next_index;
             tri_indices.push_back(t);
-            processed_indices.insert(curr_index);
+            unprocessed_indices.erase(unprocessed_indices.find(curr_index));
 
             // For each disconnected object in the image
             do
@@ -293,25 +297,18 @@ public:
                 t.curr_index = curr_index;
                 t.next_index = next_index;
                 tri_indices.push_back(t);
-                processed_indices.insert(curr_index);
+                unprocessed_indices.erase(unprocessed_indices.find(curr_index));
 
             } while (curr_index != first_index);
 
-            for (size_t i = 0; i < face_normals.size(); i++)
-            {
-                if (processed_indices.end() == processed_indices.find(i))
-                {
-                    last_unprocessed_index = i;
-                    break;
-                }
-            }
+            last_unprocessed_index = (*unprocessed_indices.begin());
 
             if (num_objects % 100 == 0)
                 cout << "Found object " << num_objects + 1 << endl;
 
             num_objects++;
 
-        } while (processed_indices.size() != face_normals.size());
+        } while (unprocessed_indices.size() != 0);
 
 
         // Finally, use the neighbour data to calculate the line segment normals
