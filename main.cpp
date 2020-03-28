@@ -1,4 +1,13 @@
-#include "main.h"
+#include "image.h"
+#include "primitives.h"
+#include "marching_squares.h"
+
+#include <vector>
+using std::vector;
+
+#include <iostream>
+using std::cout;
+using std::endl;
 
 
 int main(void)
