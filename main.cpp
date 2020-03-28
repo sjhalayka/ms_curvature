@@ -110,7 +110,7 @@ int main(void)
 
 	// Ultimately, this enumerates the line segment neighbour data
 	// The body of this function is a little complicated because we 
-	// expect no set order for the vertices in each line segment
+	// expect no set order for the vertices in each input line segment
 	lsd.process_line_segments();
 
 
