@@ -132,14 +132,17 @@ int main(void)
 		vertex_2 neighbour_0_normal = lsd.face_normals[neighbour_0_index];
 		vertex_2 neighbour_1_normal = lsd.face_normals[neighbour_1_index];
 
+		// Get the average dot product
 		double d_i = this_normal.dot(neighbour_0_normal) + this_normal.dot(neighbour_1_normal);
 		d_i /= 2.0;
 
+		// Normalize the average dot product to get the curvature
 		double k_i = (1.0 - d_i) / 2.0;
 
 		K += k_i;
 	}
 
+	// Get the average normalized curvature
 	K /= static_cast<double>(lsd.line_segments.size());
 
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
