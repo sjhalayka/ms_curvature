@@ -14,7 +14,7 @@ using std::endl;
 
 int main(void)
 {
-	// Image objects.
+	// Image objects
 	tga tga_texture;
 	float_grayscale luma;
 
@@ -114,9 +114,6 @@ int main(void)
 
 	// Ultimately, this enumerates the line segment neighbour data,
 	// and uses that to calculate the face normal data
-	//
-	// The body of this function is a little complicated because we 
-	// expect no set order for the vertices in each input line segment
 	lsd.process_line_segments();
 
 
