@@ -283,7 +283,7 @@ public:
                     if (prev_index == next_index)
                         next_index = line_segment_neighbours[curr_index][0];
                 }
-                else if (index1 == prev_index)
+                else// if (index1 == prev_index)
                 {
                     prev_index = curr_index;
                     curr_index = index0;
@@ -291,10 +291,6 @@ public:
 
                     if (prev_index == next_index)
                         next_index = line_segment_neighbours[curr_index][1];
-                }
-                else
-                {
-                    // This should never happen.
                 }
 
                 tri_index t;
