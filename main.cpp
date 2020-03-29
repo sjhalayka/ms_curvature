@@ -116,7 +116,7 @@ int main(void)
 	lsd.process_line_segments();
 
 
-	// Calculate curvature-based dimension
+	// Calculate curvature-based dimension now that we have the face normals
 	double K = 0;
 
 	for (size_t i = 0; i < lsd.line_segments.size(); i++)
