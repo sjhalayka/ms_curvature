@@ -1,18 +1,13 @@
 // Code by: Shawn Halayka -- sjhalayka@gmail.com
 // Code is in the public domain
 
-
-#include "image.h"
-#include "primitives.h"
-#include "marching_squares.h"
+#include "main.h"
 
 
-#include <iostream>
-using std::cout;
-using std::endl;
 
 
-int main(void)
+
+int main(int argc, char **argv)
 {
 	// Image objects
 	tga tga_texture;
@@ -48,13 +43,13 @@ int main(void)
 
 
 	// Marching Squares parameters
-	line_segment_data lsd;
-	double template_width = 1.0;
-	double step_size = template_width/static_cast<double>(luma.px - 1);
-	double template_height = step_size*(luma.py - 1); // Assumes square pixels.
-	double isovalue = 0.5;
-	double grid_x_min = -template_width / 2.0;
-	double grid_y_max = template_height / 2.0;
+
+	template_width = 1.0;
+	step_size = template_width/static_cast<double>(luma.px - 1);
+	template_height = step_size*(luma.py - 1); // Assumes square pixels.
+	isovalue = 0.5;
+	grid_x_min = -template_width / 2.0;
+	grid_y_max = template_height / 2.0;
 
 
 	// Print basic data
@@ -112,6 +107,10 @@ int main(void)
 	}
 
 
+
+
+
+
 	// Ultimately, this enumerates the line segment neighbour data,
 	// and uses that to calculate the face normal data
 	lsd.process_line_segments();
@@ -150,6 +149,9 @@ int main(void)
 
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
 	cout << "Box-counting dimension:    " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
+
+	// render_image(argc, argv);
+
 
 	return 0;
 }

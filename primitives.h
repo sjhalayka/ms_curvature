@@ -191,6 +191,17 @@ public:
         if (0 == line_segments.size())
             return;
 
+        // Sort vertices
+        for (size_t i = 0; i < line_segments.size(); i++)
+        {
+            if (line_segments[i].vertex[1] < line_segments[i].vertex[0])
+            {
+                vertex_2 tv = line_segments[i].vertex[0];
+                line_segments[i].vertex[0] = line_segments[i].vertex[1];
+                line_segments[i].vertex[1] = tv;
+            }
+        }
+
         cout << "Welding vertices" << endl;
 
         // Insert unique vertices into set.
