@@ -34,7 +34,7 @@ public:
 		static vertex_2 temp;
 		static double mu;
 
-		// http://local.wasp.uwa.edu.au/~pbourke/geometry/polygonise/
+		// http://paulbourke.net/geometry/polygonise/
 		mu = (isovalue - v1)/(v2 - v1);
 		temp.x = p1.x + mu*(p2.x - p1.x);
 		temp.y = p1.y + mu*(p2.y - p1.y);
