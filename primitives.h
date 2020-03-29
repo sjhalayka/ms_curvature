@@ -301,14 +301,15 @@ public:
 
             } while (curr_index != first_index);
 
-            last_unprocessed_index = (*unprocessed_indices.begin());
+            if (unprocessed_indices.size() > 0)
+                last_unprocessed_index = (*unprocessed_indices.begin());
 
             if (num_objects % 100 == 0)
                 cout << "Found object " << num_objects + 1 << endl;
 
             num_objects++;
 
-        } while (unprocessed_indices.size() != 0);
+        } while (unprocessed_indices.size() > 0);
 
 
         // Finally, use the neighbour data to calculate the line segment normals
