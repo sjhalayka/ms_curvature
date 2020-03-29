@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 
 
-#include <GL/glut.h>
+
 
 
 double template_width = 0;
@@ -24,7 +24,10 @@ double grid_y_max = 0;
 line_segment_data lsd;
 
 
+//#define USE_OPENGL
+
 #ifdef USE_OPENGL
+#include <GL/glut.h>
 
 GLint win_id = 0;
 GLint win_x = 800, win_y = 800;

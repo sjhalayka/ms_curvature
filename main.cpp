@@ -2,9 +2,6 @@
 // Code is in the public domain
 
 
-//#define USE_OPENGL
-
-
 #include "main.h"
 
 
