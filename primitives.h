@@ -311,7 +311,7 @@ public:
             if (unprocessed_indices.size() > 0)
                 last_unprocessed_index = (*unprocessed_indices.begin());
 
-            if (num_objects % 100 == 0)
+            if (num_objects % 10000 == 0)
                 cout << "Found object " << num_objects + 1 << endl;
 
             num_objects++;
@@ -378,7 +378,7 @@ protected:
 
         for (size_t i = 0; i < line_segments.size(); i++)
         {
-            if (i % 100 == 0)
+            if (i % 10000 == 0)
                 cout << i + 1 << " of " << line_segments.size() << endl;
 
             vector<size_t> points;
@@ -394,7 +394,7 @@ protected:
 
         for (map<size_t, vector<size_t> >::const_iterator ci = neighbours.begin(); ci != neighbours.end(); ci++)
         {
-            if (count % 100 == 0)
+            if (count % 10000 == 0)
                 cout << count + 1 << " of " << neighbours.size() << endl;
 
             count++;
