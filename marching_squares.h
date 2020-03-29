@@ -44,12 +44,12 @@ public:
 
 	inline void generate_primitives(vector<line_segment> &line_segments, const double isovalue)
 	{
-		// Identify which of the 4 corners of the square are within the isosurface.
-		// Max 16 cases. Only 14 cases create line segments.
+		// Identify which of the 4 corners of the square are within the isosurface
+		//
+		// Max 16 cases. Only 14 cases create line segments
 
 		// Corner vertex order: 03
 		//                      12
-		// e.g.: clockwise, as in OpenGL
 
 		unsigned short int mask = 0;
 
@@ -65,13 +65,13 @@ public:
 		if(value[3] >= isovalue)
 			mask |= 8;
 
-		// Max 6 vertices per grid cube.
+		// Max 6 vertices per grid cube
 		static vertex_2 a, b, c, d, e, f;
 		
-		// Max two line segments per grid cube.
+		// Max two line segments per grid cube
 		static line_segment ls;
 
-		// Handle the 16 cases manually.
+		// Handle the 16 cases manually
 		switch(mask)
 		{
 			case 1:
@@ -306,7 +306,7 @@ public:
 
 			case 15:
 			{
-				// Case 15 (all inside of image area) produces no outlines.
+				// Case 15 (all inside of image area) produces no outlines
 
 				//15:
 				//11
@@ -318,7 +318,7 @@ public:
 
 			default:
 			{
-				// Case 0 (all outside of image area) produces no geometry.
+				// Case 0 (all outside of image area) produces no outlines
 
 				//0:
 				//00
