@@ -237,14 +237,19 @@ public:
         cout << "Calculating normals" << endl;
         face_normals.resize(line_segments.size());
 
+        // Number of disconnected objects 
         size_t num_objects = 0;
-        size_t last_unprocessed_index = 0;
 
+        // Start with the first line segment
+        size_t last_unprocessed_index = 0;
+        
+        // Keep track of which line segments have been processed
         set<size_t> unprocessed_indices;
 
         for (size_t i = 0; i < line_segments.size(); i++)
             unprocessed_indices.insert(i);
 
+        // These will be used later for face normal calculation
         vector<tri_index> tri_indices;
 
         // Get the neighbours for each line segment
@@ -301,6 +306,8 @@ public:
 
             } while (curr_index != first_index);
 
+            // Check to see if .begin() will return a valid iterator
+            // If so, use it
             if (unprocessed_indices.size() > 0)
                 last_unprocessed_index = (*unprocessed_indices.begin());
 
