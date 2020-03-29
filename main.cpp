@@ -1,3 +1,7 @@
+// Code by: Shawn Halayka -- sjhalayka@gmail.com
+// Code is in the public domain
+
+
 #include "image.h"
 #include "primitives.h"
 #include "marching_squares.h"

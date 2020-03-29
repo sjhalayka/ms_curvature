@@ -1,3 +1,7 @@
+// Code by: Shawn Halayka -- sjhalayka@gmail.com
+// Code is in the public domain
+
+
 #ifndef MARCHING_SQUARES_H
 #define MARCHING_SQUARES_H
 

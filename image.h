@@ -1,3 +1,7 @@
+// Code by: Shawn Halayka -- sjhalayka@gmail.com
+// Code is in the public domain
+
+
 #ifndef IMAGE_H
 #define IMAGE_H
 
@@ -19,7 +23,7 @@ using std::endl;
 #include <cstring>
 
 
-// http://local.wasp.uwa.edu.au/~pbourke/dataformats/tga/
+// http://www.paulbourke.net/dataformats/tga/
 class tga
 {
 public:
@@ -84,7 +88,7 @@ float int_rgb_to_float_grayscale(const unsigned char r, const unsigned char g, c
 
 bool convert_tga_to_float_grayscale(const char* const filename, tga& t, float_grayscale& l, const bool make_black_border, const bool reverse_rows, const bool reverse_pixel_byte_order)
 {
-	// http://local.wasp.uwa.edu.au/~pbourke/dataformats/tga/
+	// http://www.paulbourke.net/dataformats/tga/
 	ifstream in(filename, ios::binary);
 
 	if (!in.is_open())
@@ -93,7 +97,7 @@ bool convert_tga_to_float_grayscale(const char* const filename, tga& t, float_gr
 		return false;
 	}
 
-	// Read in header, including variable length image descriptor.
+	// Read in header, including variable length image descriptor
 	in.read(reinterpret_cast<char*>(&t.idlength), 1);
 	in.read(reinterpret_cast<char*>(&t.colourmaptype), 1);
 	in.read(reinterpret_cast<char*>(&t.datatypecode), 1);
@@ -109,11 +113,11 @@ bool convert_tga_to_float_grayscale(const char* const filename, tga& t, float_gr
 
 	if (0 != t.idlength)
 	{
-		t.idstring.resize(static_cast<size_t>(t.idlength) + 1, '\0'); // Terminate this ``C style'' string properly.
+		t.idstring.resize(static_cast<size_t>(t.idlength) + 1, '\0'); // Terminate this ``C style'' string properly
 		in.read(&t.idstring[0], t.idlength);
 	}
 
-	// Read pixels, convert to floating point.
+	// Read pixels, convert to floating point
 	if (2 != t.datatypecode)
 	{
 		cerr << "TGA file must be in uncompressed/non-RLE 24-bit RGB format." << endl;
@@ -127,14 +131,14 @@ bool convert_tga_to_float_grayscale(const char* const filename, tga& t, float_gr
 			return false;
 		}
 
-		// Read all pixels at once.
+		// Read all pixels at once
 		size_t num_bytes = static_cast<size_t>(t.px)* static_cast<size_t>(t.py) * 3;
 		t.pixel_data.resize(num_bytes);
 		in.read(reinterpret_cast<char*>(&t.pixel_data[0]), num_bytes);
 
 		if (true == reverse_rows)
 		{
-			// Reverse row order.
+			// Reverse row order
 			short unsigned int num_rows_to_swap = t.py;
 			vector<unsigned char> buffer(static_cast<size_t>(t.px) * 3);
 
@@ -156,7 +160,7 @@ bool convert_tga_to_float_grayscale(const char* const filename, tga& t, float_gr
 
 		if (true == make_black_border)
 		{
-			// Make border pixels black.
+			// Make border pixels black
 			for (size_t x = 0; x < t.px; x++)
 			{
 				for (size_t y = 0; y < t.py; y++)
