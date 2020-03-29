@@ -303,7 +303,6 @@ public:
 
 				break;
 			}
-
 			case 15:
 			{
 				// Case 15 (all inside of image area) produces no outlines
@@ -314,7 +313,6 @@ public:
 
 				break;
 			}
-
 
 			default:
 			{
