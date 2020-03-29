@@ -14,8 +14,6 @@ using std::endl;
 #include <GL/glut.h>
 
 
-
-
 double template_width = 0;
 double step_size = 0;
 double template_height = 0;
@@ -23,10 +21,11 @@ double isovalue = 0;
 double grid_x_min = 0;
 double grid_y_max = 0;
 
-
 line_segment_data lsd;
 
-/*
+
+#ifdef USE_OPENGL
+
 GLint win_id = 0;
 GLint win_x = 800, win_y = 800;
 GLfloat camera_z = 1.25;
@@ -78,8 +77,6 @@ void display_func(void)
     glVertex2d(template_width / 2.0, template_height / 2.0);
     glEnd();
 
-    // Render image area.
-
     // Render image outline edge length.
     glColor3f(0, 0, 1);
     glLineWidth(4);
@@ -91,8 +88,7 @@ void display_func(void)
     }
     glEnd();
 
-
-
+    glColor3f(1, 0.5f, 0);
     glPointSize(6);
     glBegin(GL_LINES);
 
@@ -101,8 +97,7 @@ void display_func(void)
         vertex_2 avg_vertex = lsd.line_segments[i].vertex[0];
         avg_vertex = avg_vertex + lsd.line_segments[i].vertex[1];
         avg_vertex = avg_vertex / 2.0;
-        srand(0);
-        glColor3d(rand() % 256 / 255.0, rand() % 256 / 255.0, rand() % 256 / 255.0);
+
         glVertex2d(avg_vertex.x, avg_vertex.y);
         glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.001, avg_vertex.y + lsd.face_normals[i].y * 0.001);
     }
@@ -132,6 +127,7 @@ void render_image(int& argc, char**& argv)
     // Cleanup OpenGL.
     glutDestroyWindow(win_id);
 }
-*/
+
+#endif // USE_OPENGL
 
 #endif

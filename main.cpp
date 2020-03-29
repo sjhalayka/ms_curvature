@@ -1,10 +1,11 @@
 // Code by: Shawn Halayka -- sjhalayka@gmail.com
 // Code is in the public domain
 
+
+//#define USE_OPENGL
+
+
 #include "main.h"
-
-
-
 
 
 int main(int argc, char **argv)
@@ -43,7 +44,6 @@ int main(int argc, char **argv)
 
 
 	// Marching Squares parameters
-
 	template_width = 1.0;
 	step_size = template_width/static_cast<double>(luma.px - 1);
 	template_height = step_size*(luma.py - 1); // Assumes square pixels.
@@ -107,10 +107,6 @@ int main(int argc, char **argv)
 	}
 
 
-
-
-
-
 	// Ultimately, this enumerates the line segment neighbour data,
 	// and uses that to calculate the face normal data
 	lsd.process_line_segments();
@@ -150,7 +146,10 @@ int main(int argc, char **argv)
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
 	cout << "Box-counting dimension:    " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
 
-	// render_image(argc, argv);
+
+#ifdef USE_OPENGL
+	render_image(argc, argv);
+#endif
 
 
 	return 0;
