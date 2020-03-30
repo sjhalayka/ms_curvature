@@ -350,6 +350,7 @@ public:
             else
                 last_vertex_index = 1;
 
+            // Use the oriented neighbours to get the face normal
             vertex_2 edge = line_segments[prev_index].vertex[first_vertex_index] - line_segments[next_index].vertex[last_vertex_index];
             face_normals[curr_index] = vertex_2(-edge.y, edge.x);
             face_normals[curr_index].normalize();
