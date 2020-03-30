@@ -130,4 +130,5 @@ void render_image(int& argc, char**& argv)
 
 #endif // USE_OPENGL
 
+
 #endif
