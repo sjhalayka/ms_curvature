@@ -1,6 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+
 #include "image.h"
 #include "primitives.h"
 #include "marching_squares.h"

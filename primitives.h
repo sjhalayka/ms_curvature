@@ -165,7 +165,6 @@ public:
 
 	vertex_2 vertex[2];
 
-
 	double length(void)
 	{
 		return sqrt( pow(vertex[0].x - vertex[1].x, 2.0) + pow(vertex[0].y - vertex[1].y, 2.0) );
@@ -188,7 +187,7 @@ public:
         face_normals.clear();
         vertices.clear();
 
-        if (0 == line_segments.size())
+        if (3 > line_segments.size())
             return;
 
         // Sort vertices, to gain some sense of order
@@ -319,6 +318,7 @@ public:
 
             // Check to see if .begin() will return a valid iterator
             // If so, use it
+            // If not, then we're done!
             if (unprocessed_indices.size() > 0)
                 last_unprocessed_index = (*unprocessed_indices.begin());
 
@@ -354,7 +354,6 @@ public:
             face_normals[curr_index] = vertex_2(-edge.y, edge.x);
             face_normals[curr_index].normalize();
         }
-
 
         cout << "Found " << num_objects << " object(s)." << endl;
     }
