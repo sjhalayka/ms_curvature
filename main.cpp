@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 
 
 	// Calculate curvature-based dimension now that we have the face normals
-	double K = 0;
+	vector<double> k;
 
 	for (size_t i = 0; i < lsd.line_segments.size(); i++)
 	{
@@ -134,12 +134,18 @@ int main(int argc, char **argv)
 		// Normalize the average dot product to get the curvature
 		double k_i = (1.0 - d_i) / 2.0;
 
-		K += k_i;
+		k.push_back(k_i);
 	}
+
+	double K = 0;
+
+	for (size_t i = 0; i < k.size(); i++)
+		K += k[i];
 
 	// Get the average normalized curvature
 	K /= static_cast<double>(lsd.line_segments.size());
 
+	cout << "Curvature:                 " << K << " +/- " << standard_deviation(k) << endl;
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
 	cout << "Box-counting dimension:    " << log(static_cast<double>(box_count)) / log(1.0 / step_size) << endl;
 

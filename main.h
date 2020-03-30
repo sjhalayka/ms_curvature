@@ -22,6 +22,30 @@ double grid_y_max = 0;
 line_segment_data lsd;
 
 
+double standard_deviation(const vector<double>& src)
+{
+    double mean = 0;
+    double size = static_cast<double>(src.size());
+
+    for (size_t i = 0; i < src.size(); i++)
+        mean += src[i];
+
+    mean /= size;
+
+    double sq_diff = 0;
+
+    for (size_t i = 0; i < src.size(); i++)
+    {
+        double diff = src[i] - mean;
+        sq_diff += diff * diff;
+    }
+
+    sq_diff /= size;
+
+    return sqrt(sq_diff);
+}
+
+
 //#define USE_OPENGL
 
 #ifdef USE_OPENGL
