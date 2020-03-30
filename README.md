@@ -2,7 +2,7 @@ C++ code to convert a TGA image into line segments using Marching Squares.
 
 Code produces both curvature-based and box-counting dimension.
 
-See sample_figure1.zip for a sample Mandelbrot set, where:
+See sample_figure1.zip for a sample Mandelbrot set (http://paulbourke.net/fractals/mandelbrot/), where:
 <br>
 Curvature-based dimension: 1.16316
 <br>
