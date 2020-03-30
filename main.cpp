@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 		K += k[i];
 
 	// Get the average normalized curvature
-	K /= static_cast<double>(lsd.line_segments.size());
+	K /= static_cast<double>(k.size());
 
 	cout << "Curvature:                 " << K << " +/- " << standard_deviation(k) << endl;
 	cout << "Curvature-based dimension: " << 1.0 + K << endl;
