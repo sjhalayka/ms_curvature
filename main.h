@@ -49,6 +49,7 @@ double standard_deviation(const vector<double>& src)
 //#define USE_OPENGL
 
 #ifdef USE_OPENGL
+
 #include <GL/glut.h>
 
 GLint win_id = 0;
