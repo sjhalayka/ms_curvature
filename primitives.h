@@ -174,7 +174,7 @@ public:
 
 
 
-// Marching squares-related geometric primitives.
+// Marching squares-related geometric primitives
 class line_segment_data
 {
 public:
@@ -191,7 +191,7 @@ public:
         if (0 == line_segments.size())
             return;
 
-        // Sort vertices, to gain order
+        // Sort vertices, to gain some sense of order
         for (size_t i = 0; i < line_segments.size(); i++)
         {
             if (line_segments[i].vertex[1] < line_segments[i].vertex[0])
@@ -204,7 +204,7 @@ public:
 
         cout << "Welding vertices" << endl;
 
-        // Insert unique vertices into set.
+        // Insert unique vertices into set
         set<vertex_2> vertex_set;
 
         for (vector<line_segment>::const_iterator i = line_segments.begin(); i != line_segments.end(); i++)
@@ -217,7 +217,7 @@ public:
 
         cout << "Generating vertex indices" << endl;
 
-        // Add indices to the vertices.
+        // Add indices to the vertices
         for (set<vertex_2>::const_iterator i = vertex_set.begin(); i != vertex_set.end(); i++)
         {
             size_t index = vertices.size();
@@ -227,13 +227,13 @@ public:
 
         vertex_set.clear();
 
-        // Re-insert modifies vertices into set.
+        // Re-insert modifies vertices into set
         for (vector<vertex_2>::const_iterator i = vertices.begin(); i != vertices.end(); i++)
             vertex_set.insert(*i);
 
         cout << "Assigning vertex indices to line segments" << endl;
 
-        // Find the two vertices for each line segment, by index.
+        // Find the two vertices for each line segment, by index
         set<vertex_2>::iterator find_iter;
 
         for (vector<line_segment>::iterator i = line_segments.begin(); i != line_segments.end(); i++)

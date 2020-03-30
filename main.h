@@ -29,14 +29,14 @@ line_segment_data lsd;
 GLint win_id = 0;
 GLint win_x = 800, win_y = 800;
 GLfloat camera_z = 1.25;
-float background_colour = 0.33f;
+float background_colour = 0.333333f;
 
 void idle_func(void)
 {
     glutPostRedisplay();
 }
 
-// Resize window.
+// Resize window
 void reshape_func(int width, int height)
 {
     if (width < 1)
@@ -58,17 +58,17 @@ void reshape_func(int width, int height)
     gluLookAt(0, 0, camera_z, 0, 0, 0, 0, 1, 0);
 }
 
-// Visualization.
+// Visualization
 void display_func(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Scale all geometric primitives so that template width == 1.
+    // Scale all geometric primitives so that template width == 1
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glScaled(1.0 / template_width, 1.0 / template_width, 1.0 / template_width);
 
-    // Render a dark background.
+    // Render a dark background
     glColor3f(0, 0, 0);
     glBegin(GL_QUADS);
     glVertex2d(-template_width / 2.0, template_height / 2.0);
@@ -77,9 +77,9 @@ void display_func(void)
     glVertex2d(template_width / 2.0, template_height / 2.0);
     glEnd();
 
-    // Render image outline edge length.
+    // Render image outline edge length
     glColor3f(0, 0, 1);
-    glLineWidth(4);
+    glLineWidth(1);
     glBegin(GL_LINES);
     for (size_t i = 0; i < lsd.line_segments.size(); i++)
     {
@@ -89,7 +89,7 @@ void display_func(void)
     glEnd();
 
     glColor3f(1, 0.5f, 0);
-    glPointSize(6);
+    glPointSize(1);
     glBegin(GL_LINES);
 
     for (size_t i = 0; i < lsd.line_segments.size(); i++)
@@ -99,7 +99,7 @@ void display_func(void)
         avg_vertex = avg_vertex / 2.0;
 
         glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.001, avg_vertex.y + lsd.face_normals[i].y * 0.001);
+        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.01, avg_vertex.y + lsd.face_normals[i].y * 0.01);
     }
     glEnd();
 
@@ -108,7 +108,7 @@ void display_func(void)
 
 void render_image(int& argc, char**& argv)
 {
-    // Initialize OpenGL.
+    // Initialize OpenGL
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB);
     glutInitWindowPosition(0, 0);
