@@ -11,9 +11,6 @@ using std::cout;
 using std::endl;
 
 
-
-
-
 double template_width = 0;
 double step_size = 0;
 double template_height = 0;
@@ -102,7 +99,7 @@ void display_func(void)
         avg_vertex = avg_vertex / 2.0;
 
         glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.001, avg_vertex.y + lsd.face_normals[i].y * 0.001);
+        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.1, avg_vertex.y + lsd.face_normals[i].y * 0.1);
     }
     glEnd();
 

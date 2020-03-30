@@ -191,7 +191,7 @@ public:
         if (0 == line_segments.size())
             return;
 
-        // Sort vertices
+        // Sort vertices, to gain order
         for (size_t i = 0; i < line_segments.size(); i++)
         {
             if (line_segments[i].vertex[1] < line_segments[i].vertex[0])
