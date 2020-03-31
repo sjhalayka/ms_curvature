@@ -7,3 +7,5 @@ See figure1.tga for a sample Mandelbrot set (taken from http://paulbourke.net/fr
 Curvature-based dimension: 1.16316
 <br>
 Box-counting dimension:    1.39349
+
+Also see cat.tga and smalldot.tga for more sample images.
