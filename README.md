@@ -8,4 +8,4 @@ Curvature-based dimension: 1.16316
 <br>
 Box-counting dimension:    1.39349
 
-Also see cat.tga (it's cute) and smalldot.tga (especially easy to visualize, using OpenGL) for more sample images.
+Also see cat.tga (it's cute), and small_mandelbrot.tga or smalldot.tga (especially easy to visualize, using OpenGL) for more sample images.
