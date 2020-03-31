@@ -107,7 +107,7 @@ void display_func(void)
         glVertex2d(template_width / 2.0, template_height / 2.0);
     glEnd();
 
-    // Render image outline edge length
+    // Render image outlines
     glColor3f(0, 0, 1);
     glLineWidth(1);
     glBegin(GL_LINES);
@@ -118,6 +118,7 @@ void display_func(void)
         }
     glEnd();
 
+    // Render face normals
     glColor3f(1, 0.5f, 0);
     glBegin(GL_LINES);
         for (size_t i = 0; i < lsd.line_segments.size(); i++)
