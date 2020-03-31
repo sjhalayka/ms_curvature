@@ -1,3 +1,7 @@
+// Code by: Shawn Halayka -- sjhalayka@gmail.com
+// Code is in the public domain
+
+
 #ifndef MAIN_H
 #define MAIN_H
 
@@ -54,7 +58,7 @@ double standard_deviation(const vector<double>& src)
 
 GLint win_id = 0;
 GLint win_x = 800, win_y = 800;
-GLfloat camera_z = 1.25;
+GLfloat camera_z = 1.25f;
 float background_colour = 0.333333f;
 
 void idle_func(void)
@@ -97,36 +101,34 @@ void display_func(void)
     // Render a dark background
     glColor3f(0, 0, 0);
     glBegin(GL_QUADS);
-    glVertex2d(-template_width / 2.0, template_height / 2.0);
-    glVertex2d(-template_width / 2.0, -template_height / 2.0);
-    glVertex2d(template_width / 2.0, -template_height / 2.0);
-    glVertex2d(template_width / 2.0, template_height / 2.0);
+        glVertex2d(-template_width / 2.0, template_height / 2.0);
+        glVertex2d(-template_width / 2.0, -template_height / 2.0);
+        glVertex2d(template_width / 2.0, -template_height / 2.0);
+        glVertex2d(template_width / 2.0, template_height / 2.0);
     glEnd();
 
     // Render image outline edge length
     glColor3f(0, 0, 1);
     glLineWidth(1);
     glBegin(GL_LINES);
-    for (size_t i = 0; i < lsd.line_segments.size(); i++)
-    {
-        glVertex2d(lsd.line_segments[i].vertex[0].x, lsd.line_segments[i].vertex[0].y);
-        glVertex2d(lsd.line_segments[i].vertex[1].x, lsd.line_segments[i].vertex[1].y);
-    }
+        for (size_t i = 0; i < lsd.line_segments.size(); i++)
+        {
+            glVertex2d(lsd.line_segments[i].vertex[0].x, lsd.line_segments[i].vertex[0].y);
+            glVertex2d(lsd.line_segments[i].vertex[1].x, lsd.line_segments[i].vertex[1].y);
+        }
     glEnd();
 
     glColor3f(1, 0.5f, 0);
-    glPointSize(1);
     glBegin(GL_LINES);
+        for (size_t i = 0; i < lsd.line_segments.size(); i++)
+        {
+            vertex_2 avg_vertex = lsd.line_segments[i].vertex[0];
+            avg_vertex = avg_vertex + lsd.line_segments[i].vertex[1];
+            avg_vertex = avg_vertex / 2.0;
 
-    for (size_t i = 0; i < lsd.line_segments.size(); i++)
-    {
-        vertex_2 avg_vertex = lsd.line_segments[i].vertex[0];
-        avg_vertex = avg_vertex + lsd.line_segments[i].vertex[1];
-        avg_vertex = avg_vertex / 2.0;
-
-        glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.01, avg_vertex.y + lsd.face_normals[i].y * 0.01);
-    }
+            glVertex2d(avg_vertex.x, avg_vertex.y);
+            glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.01, avg_vertex.y + lsd.face_normals[i].y * 0.01);
+        }
     glEnd();
 
     glFlush();
