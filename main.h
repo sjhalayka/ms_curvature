@@ -109,6 +109,7 @@ void display_func(void)
 
     // Render face normals
     glColor3f(1, 0.5f, 0);
+    glLineWidth(1);
     glBegin(GL_LINES);
     for (size_t i = 0; i < lsd.line_segments.size(); i++)
     {
@@ -123,7 +124,7 @@ void display_func(void)
 
     // Render image outlines
     glColor3f(0, 0.5f, 1);
-    glLineWidth(1);
+    glLineWidth(2);
     glBegin(GL_LINES);
         for (size_t i = 0; i < lsd.line_segments.size(); i++)
         {
