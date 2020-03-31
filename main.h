@@ -122,7 +122,7 @@ void display_func(void)
     glEnd();
 
     // Render image outlines
-    glColor3f(0, 0, 1);
+    glColor3f(0, 0.5f, 1);
     glLineWidth(1);
     glBegin(GL_LINES);
         for (size_t i = 0; i < lsd.line_segments.size(); i++)
