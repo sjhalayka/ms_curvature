@@ -89,10 +89,10 @@ int main(int argc, char **argv)
 			g.value[2] = luma.pixel_data[(y + 1)*luma.px + (x + 1)];
 			g.value[3] = luma.pixel_data[y*luma.px + (x + 1)];
 
-			// Add primitives to line segment vector
+			// Add line segment primitives to line segment vector
 			//
 			// Box-counting dimension is very simple to calculate
-			// when using Marching Squares -- if there is geometry,
+			// when using Marching Squares -- if primitives were added,
 			// then the boundary is covered by this particular 
 			// grid_square (box)
 			if (0 < g.generate_primitives(lsd.line_segments, isovalue))
