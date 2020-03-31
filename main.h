@@ -111,15 +111,15 @@ void display_func(void)
     glColor3f(1, 0.5f, 0);
     glLineWidth(1);
     glBegin(GL_LINES);
-    for (size_t i = 0; i < lsd.line_segments.size(); i++)
-    {
-        vertex_2 avg_vertex = lsd.line_segments[i].vertex[0];
-        avg_vertex = avg_vertex + lsd.line_segments[i].vertex[1];
-        avg_vertex = avg_vertex / 2.0;
+        for (size_t i = 0; i < lsd.line_segments.size(); i++)
+        {
+            vertex_2 avg_vertex = lsd.line_segments[i].vertex[0];
+            avg_vertex = avg_vertex + lsd.line_segments[i].vertex[1];
+            avg_vertex = avg_vertex / 2.0;
 
-        glVertex2d(avg_vertex.x, avg_vertex.y);
-        glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.01, avg_vertex.y + lsd.face_normals[i].y * 0.01);
-    }
+            glVertex2d(avg_vertex.x, avg_vertex.y);
+            glVertex2d(avg_vertex.x + lsd.face_normals[i].x * 0.01, avg_vertex.y + lsd.face_normals[i].y * 0.01);
+        }
     glEnd();
 
     // Render image outlines
