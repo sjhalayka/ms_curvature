@@ -46,7 +46,7 @@ public:
 		return temp;
 	}
 
-	inline void generate_primitives(vector<line_segment> &line_segments, const double isovalue)
+	inline short unsigned int generate_primitives(vector<line_segment> &line_segments, const double isovalue)
 	{
 		// Identify which of the 4 corners of the square are within the isosurface
 		//
@@ -92,7 +92,7 @@ public:
 
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 2:
 			{
@@ -107,7 +107,7 @@ public:
 				ls.vertex[1] = c;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 4:
 			{
@@ -122,7 +122,7 @@ public:
 				ls.vertex[1] = c;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 8:
 			{
@@ -137,7 +137,7 @@ public:
 				ls.vertex[1] = b;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 
 
@@ -154,7 +154,7 @@ public:
 				ls.vertex[1] = c;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 6:
 			{
@@ -169,7 +169,7 @@ public:
 				ls.vertex[1] = d;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 9:
 			{
@@ -184,7 +184,7 @@ public:
 				ls.vertex[1] = c;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 12:
 			{
@@ -199,7 +199,7 @@ public:
 				ls.vertex[1] = b;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 
 
@@ -222,7 +222,7 @@ public:
 				ls.vertex[1] = f;
 				line_segments.push_back(ls);
 
-				break;
+				return 2;
 			}
 			case 10:
 			{
@@ -243,7 +243,7 @@ public:
 				ls.vertex[1] = e;
 				line_segments.push_back(ls);
 
-				break;
+				return 2;
 			}
 
 
@@ -260,7 +260,7 @@ public:
 				ls.vertex[1] = d;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 11:
 			{
@@ -275,7 +275,7 @@ public:
 				ls.vertex[1] = d;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 13:
 			{
@@ -290,7 +290,7 @@ public:
 				ls.vertex[1] = c;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 14:
 			{
@@ -305,7 +305,7 @@ public:
 				ls.vertex[1] = e;
 				line_segments.push_back(ls);
 
-				break;
+				return 1;
 			}
 			case 15:
 			{
@@ -315,7 +315,7 @@ public:
 				//11
 				//11
 
-				break;
+				return 0;
 			}
 
 			default:
@@ -329,6 +329,8 @@ public:
 				break;
 			}
 		}
+
+		return 0;
 	}
 };
 
